@@ -1,4 +1,4 @@
-package terminator.generatori;
+package IAZI_simulator.generatori;
 
 public abstract class Generatore {
 	
