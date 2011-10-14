@@ -18,9 +18,9 @@ public class GeneratoreUniforme extends Generatore {
 		this.current = seme;
 	}
 	
-	public double getNext() { 
-		//valore compreso tra 0 e 1
-		return (double)getLong() / (double)modulo;
+	public double getNext() //valore compreso tra 0 e 1
+	{
+		return (double)getLong()/(double)modulo;
 	}
 	
 	public long getSeme() {
@@ -48,8 +48,39 @@ public class GeneratoreUniforme extends Generatore {
 	}
 	
 	private long getLong(){
-		current = (moltiplicatore * current) % modulo;
+		
+		current = (moltiplicatore*current)%modulo;
 		return current;
+	}
+
+
+	//main di prova
+	public static void main(String args[]){
+		
+		long[] semi = new long[2];
+		semi[0]=83609;
+		semi[1]=12301;
+				
+		//int stadi = 3;
+		Generatore gen = new GeneratoreUniforme(semi[0]); //il seme deve essere dispari
+		double sum = 0;
+		int nrun = 0;
+		double app = 0;
+		
+		for(int i=0; i<1000; i++){
+			
+			app = gen.getNext();
+			System.out.println(app + "\n");
+			sum+=app;
+			nrun++;
+		}
+		
+		System.out.println("***********");
+		System.out.println(" somma = " + sum + ";" + " media = " + (sum/nrun) );
+		
+		
+		
+		
 	}
 
 	long seme;
@@ -57,7 +88,6 @@ public class GeneratoreUniforme extends Generatore {
 	long moltiplicatore;
 	long current;
 }
-
 
 
 

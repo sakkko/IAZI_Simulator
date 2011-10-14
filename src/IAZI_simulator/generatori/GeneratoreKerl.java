@@ -3,21 +3,23 @@ package IAZI_simulator.generatori;
 public class GeneratoreKerl extends Generatore {
 
 	
-	public GeneratoreKerl(long[] seme, int stadi, double Ta) {
+	public GeneratoreKerl(long[] seme, int stadi, double Ta){
+		
 		super();
-		if (seme.length == stadi) { 
-			//un valore di seme per ogni gen. esp. del centro erlangiano
+		if(seme.length==stadi){ // un valore di seme per ogni gen. esp. del centro erlangiano
 			this.Ta = Ta;
 			this.k = stadi;
 			this.gen = new GeneratoreEsponenziale[stadi];
-			for (int i=0; i<stadi; i++){
+			for(int i=0; i<stadi; i++){
 				gen[i] = new GeneratoreEsponenziale(seme[i],Ta/stadi);
 			}
 		}
+		
 		else System.out.println("Numero semi diverso dal numero degli stadi");
 	}
 	
 	public double getNext(){
+		
 		double t=0;
 		for(int i=0; i<gen.length; i++){
 			t+=gen[i].getNext();
