@@ -1,36 +1,33 @@
 package IAZI_simulator.code;
 
-import java.util.ArrayList;
-
 import IAZI_simulator.entita.Job;
 
 
-public class FIFO {
+public class FIFO extends Coda {
 	
 
-	private ArrayList<Job> coda_fifo;
-	
 	public FIFO(){
 		
-		coda_fifo = new ArrayList<Job>();
+		super();
 	}
 	
-	public void inserisciJob(Job job){
+	public void inserisciJob(Job job){ //inserimento in coda
 		
-		this.coda_fifo.add(job); 
+		this.coda.add(job); 
 	}
 	
-	public Job prelevaJob(){
+	public Job prelevaJob(){ // selezione primo elemento della lista
 		
-		return this.coda_fifo.remove(0);
+		return this.coda.remove(0);
 	}
 	
 	public boolean codaVuota()	{
 		
-		if(this.coda_fifo.isEmpty())
+		if(this.coda.isEmpty())
 			return true;
 		else
 			return false;
 	}
 
+	
 }

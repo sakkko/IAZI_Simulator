@@ -1,32 +1,27 @@
 package IAZI_simulator.code;
 
-import java.util.ArrayList;
-
 import IAZI_simulator.entita.Job;
 
-public class LIFO {
+public class LIFO extends Coda {
 
-
-	private ArrayList<Job> coda_lifo;
-	
 	public LIFO(){
 		
-		coda_lifo = new ArrayList<Job>();
+		super();
 	}
 	
-	public void inserisciJob(Job job){
+	public void inserisciJob(Job job){ //inserimento in coda
 		
-		this.coda_lifo.add(job); 
+		this.coda.add(job); 
 	}
 	
 	public Job prelevaJob(){
 		
-		return this.coda_lifo.remove(coda_lifo.size()-1);
+		return this.coda.remove(coda.size()-1); //selezione ultimo elemento della lista
 	}
 	
 	public boolean codaVuota(){
 		
-		if(this.coda_lifo.isEmpty())
+		if(this.coda.isEmpty())
 			return true;
 		else
 			return false;
