@@ -9,13 +9,43 @@ import IAZI_simulator.entita.Job;
 
 public abstract class Centro {
 	
+	private boolean occupato;
+	private Job job;
+	
+	public Centro() {
+		occupato = false;
+		job = null;
+	}
+	
+	public boolean isOccupato() {
+		return occupato;
+	}
+
+	public void setOccupato(boolean occupato) {
+		this.occupato = occupato;
+	}
+
+	public Job getJob() {
+		return job;
+	}
+
+	public void setJob(Job job) {
+		this.job = job;
+	}
+	
+	public Job rimuoviJob(){
+		Job toRemove = job;
+		job = null;
+		occupato = false;
+		return toRemove;
+	}
+	
+	public void setInizioServizioJob(double tempoInizioServizio){		
+		this.job.setTempoInizioServizio(tempoInizioServizio);
+	}
+
 	//aggiunge un job al centro se è libero, altrimenti lo mette in coda(dove prevista)
 	public abstract double aggiungiJob(Job job, double tempoInizioServizio);
 	
-	//imposta il tempo di inizio servizio del job che si è deciso di iniziare a servire
-	public abstract void setInizioServizioJob(double tempoInizioServizio);
-	
-	//rimuove il job dal centro, dopo che è stato servito
-	public abstract Job rimuoviJob();
 	
 }

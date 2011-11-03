@@ -10,61 +10,41 @@ public class PcHS extends Centro {
 	
 	private static int cont = 0;
 	private int id;//identificativo dell'i-esimo HOST
-	private final double tempo_medio_servizio = 0.00274;//secondi
-	private boolean occupato;
-	private Job job; //identific il job che è in esecuzione nel centro
+	private static final double TEMPO_MEDIO_SERVIZIO = 0.00274;//secondi
 	private Generatore gen_iperesp;
 	private Coda FIFO;
 	
-	public PcHS(long[] seme){
-		
+	public PcHS(long seme1, long seme2){		
+		super();
 		this.id = cont;
-		cont++;
-		this.occupato = false;
-		this.job = null;
-		this.gen_iperesp = new GeneratoreIperesp(seme, 0.6, this.tempo_medio_servizio);
+		cont ++;
+		this.gen_iperesp = new GeneratoreIperesp(seme1, seme2, 0.6, PcHS.TEMPO_MEDIO_SERVIZIO);
 		this.FIFO = new FIFO();
 	}
 	
 	//aggiunge un job al centro se è libero, altrimenti lo mette in coda
 	public double aggiungiJob(Job job, double tempoInizioServizio){
 		
-		if(!this.isOccupato()){
+		if(this.isOccupato()){
 			this.FIFO.inserisciJob(job);
 			return -1; //il valore -1 afferma che il centro è occupato
-		}
-		
-		else	
-			this.job = job;
+		} else {	
+			setJob(job);
 			this.setInizioServizioJob(tempoInizioServizio);
 			this.setOccupato(true);
 			
-			return gen_iperesp.getNext(); //ritorno il prossimo tempo in cui il centro sarà pronto peer un nuovo servizio
-										//(credo che questo valore serva per aggiornare il calendario degli eventi!)
-	}
-	
-	public void setInizioServizioJob(double tempoInizioServizio){
-		
-		this.job.setTempoInizioServizio(tempoInizioServizio);
+			return gen_iperesp.getNext(); 
+		}
 	}
 
 	public Job prelevaJob(){
-		
 		if(!this.FIFO.codaVuota()){
 			return this.FIFO.prelevaJob();
+		} else {
+			return null;
 		}
-		
-		else return null;
 	}
-	
-	public Job rimuoviJob(){
-		
-		Job toRemove = this.job;
-		this.job = null;
-		this.setOccupato(false);
-		
-		return toRemove;
-	}
+
 	
 	public int getId() {
 		return id;
@@ -74,13 +54,6 @@ public class PcHS extends Centro {
 		this.id = id;
 	}
 
-	public boolean isOccupato() {
-		return occupato;
-	}
-
-	public void setOccupato(boolean occupato) {
-		this.occupato = occupato;
-	}
 	
 
 }

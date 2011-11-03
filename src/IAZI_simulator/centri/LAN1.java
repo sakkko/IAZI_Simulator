@@ -5,46 +5,41 @@ import IAZI_simulator.generatori.Generatore;
 import IAZI_simulator.generatori.GeneratoreIperesp;
 
 public class LAN1 extends Centro {
+	private static final double TEMPO_MEDIO_SERVIZIO_A  = 0.00016;//secondi
+	private static final double TEMPO_MEDIO_SERVIZIO_B = 0.0008;//secondi
 	
-	private final double tempo_medio_servizio_classeA = 0.00016;//secondi
-	private final double tempo_medio_servizio_classeB = 0.0008;//secondi
-	private Job job; //identific il job che è in esecuzione nel centro
+	private static int cont = 0;
+	private int id;
+
 	private Generatore gen_iperespA;
 	private Generatore gen_iperespB;
 	
-	public LAN1(long[] seme){
-		
-		this.job = null;
-		this.gen_iperespA = new GeneratoreIperesp(seme, 0.3, this.tempo_medio_servizio_classeA);
-		this.gen_iperespB = new GeneratoreIperesp(seme, 0.3, this.tempo_medio_servizio_classeB);
+	public LAN1(long seme1, long seme2){
+		this.id = cont;
+		cont ++;
+		this.gen_iperespA = new GeneratoreIperesp(seme1, seme2, 0.3, LAN1.TEMPO_MEDIO_SERVIZIO_A);
+		this.gen_iperespB = new GeneratoreIperesp(seme1, seme2, 0.3, LAN1.TEMPO_MEDIO_SERVIZIO_B);
 	}
 	
 	//aggiunge un job al centro
 	public double aggiungiJob(Job job, double tempoInizioServizio){
-		
-		this.job = job;
-		this.setInizioServizioJob(tempoInizioServizio);
+		String classe = job.getClasse();
+		setJob(job);
+		setInizioServizioJob(tempoInizioServizio);
 			
-		String classe = this.job.getClasse();	
-		
 		if(classe.equals("A")){
 			return this.gen_iperespA.getNext();
-		}
-		else
+		} else {
 			return this.gen_iperespB.getNext();
-	}
-	
-	public void setInizioServizioJob(double tempoInizioServizio){
-		
-		this.job.setTempoInizioServizio(tempoInizioServizio);
+		}
 	}
 
-	public Job rimuoviJob(){
-		
-		Job toRemove = this.job;
-		this.job = null;
-		return toRemove;
+
+	public int getId() {
+		return id;
 	}
+	
+	
 	
 	
 }	

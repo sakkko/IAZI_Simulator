@@ -8,6 +8,7 @@ public class GeneratoreUniforme extends Generatore {
 		this.modulo = modulo;
 		this.moltiplicatore = moltiplicatore;
 		this.current = seme;
+		this.nGenerati = 0;
 	}
 	
 	public GeneratoreUniforme(long seme) {
@@ -47,16 +48,22 @@ public class GeneratoreUniforme extends Generatore {
 		this.moltiplicatore = moltiplicatore;
 	}
 	
-	private long getLong(){
-		
-		current = (moltiplicatore*current)%modulo;
-		return current;
+	private long getLong(){		
+		if (nGenerati == 0) {
+			nGenerati ++;
+			return seme;
+		} else {
+			current = (moltiplicatore * current) % modulo;
+			return current;
+		}
 	}
 
+	int nGenerati;
 
 	//main di prova
 	public static void main(String args[]){
 		
+		/*
 		long[] semi = new long[2];
 		semi[0]=83609;
 		semi[1]=12301;
@@ -77,7 +84,37 @@ public class GeneratoreUniforme extends Generatore {
 		
 		System.out.println("***********");
 		System.out.println(" somma = " + sum + ";" + " media = " + (sum/nrun) );
+		*/
 		
+		long seme = 12301;
+		GeneratoreUniforme gen = new GeneratoreUniforme(seme);		
+		long app = gen.getLong();
+		System.out.println("X0 = " + app);
+		long app2;
+		long n = 0;
+		
+		while (true) {
+			app2 = gen.getLong();
+			n ++;
+			if (app2 == app) {
+				break;
+			}
+		}
+		
+		System.out.println("N = " + n);
+		seme = 83609;
+		gen = new GeneratoreUniforme(seme);
+		app = gen.getLong();
+
+		while (true) {
+			app2 = gen.getLong();
+			n ++;
+			if (app2 == app) {
+				break;
+			}
+		}
+		
+		System.out.println("N = " + n);
 		
 		
 		

@@ -10,65 +10,34 @@ public class GW1 extends Centro {
 
 	//non uso un id per il centro GW perchè sarà un centro unico per l'impianto, dotato di uan coda
 	//che gestisce l'arrivo di piu carichi contemporaneamente
-	private final double tempo_medio_servizio = 0.0005;//secondi
-	private boolean occupato;
-	private Job job; //identific il job che è in esecuzione nel centro
+	private static final double TEMPO_MEDIO_SERVIZIO = 0.0005;//secondi
 	private Generatore gen_iperesp;
 	private Coda LIFO;
 	
-	public GW1(long[] seme){
-		
-		this.occupato = false;
-		this.job = null;
-		this.gen_iperesp = new GeneratoreIperesp(seme, 0.5, this.tempo_medio_servizio);
+	public GW1(long seme1, long seme2){	
+		this.gen_iperesp = new GeneratoreIperesp(seme1, seme2, 0.5, GW1.TEMPO_MEDIO_SERVIZIO);
 		this.LIFO = new LIFO();
 	}
 	
 	//aggiunge un job al centro se è libero, altrimenti lo mette in coda
-	public double aggiungiJob(Job job, double tempoInizioServizio){
-		
-		if(!this.isOccupato()){
+	public double aggiungiJob(Job job, double tempoInizioServizio){		
+		if (this.isOccupato()) {
 			this.LIFO.inserisciJob(job);
 			return -1; //il valore -1 afferma che il centro è occupato
-		}
-		
-		else	
-			this.job = job;
+		} else {
+			setJob(job);
 			this.setInizioServizioJob(tempoInizioServizio);
-			this.setOccupato(true);
-			
+			setOccupato(true);			
 			return gen_iperesp.getNext(); //ritorno il prossimo tempo in cui il centro sarà pronto peer un nuovo servizio
-	}
-	
-	public void setInizioServizioJob(double tempoInizioServizio){
-		
-		this.job.setTempoInizioServizio(tempoInizioServizio);
+		}
 	}
 
-	public Job prelevaJob(){
-		
+	public Job prelevaJob(){		
 		if(!this.LIFO.codaVuota()){
 			return this.LIFO.prelevaJob();
+		} else { 
+			return null;
 		}
-		
-		else return null;
-	}
-	
-	public Job rimuoviJob(){
-		
-		Job toRemove = this.job;
-		this.job = null;
-		this.setOccupato(false);
-		
-		return toRemove;
-	}
-	
-	public boolean isOccupato() {
-		return occupato;
-	}
-
-	public void setOccupato(boolean occupato) {
-		this.occupato = occupato;
 	}
 	
 

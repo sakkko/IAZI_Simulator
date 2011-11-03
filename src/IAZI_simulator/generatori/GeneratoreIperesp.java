@@ -3,20 +3,15 @@ package IAZI_simulator.generatori;
 public class GeneratoreIperesp extends Generatore {
 	
 	
-	public GeneratoreIperesp(long[] seme, double probabilità, double Ta){
-		
+	public GeneratoreIperesp(long seme1, long seme2, double probabilità, double Ta){
 		super();
-		if(seme.length==2){
-			this.Ta = Ta;
-			this.p = probabilità;
-			this.genUniforme = new GeneratoreUniforme(seme[0]);
-			this.genEsponenziale = new GeneratoreEsponenziale(seme[1],1); // variabile esponenziale con media 1
-		}
-		else System.out.println("Numero dei semi inseriti errato");
+		this.Ta = Ta;
+		this.p = probabilità;
+		this.genUniforme = new GeneratoreUniforme(seme1);
+		this.genEsponenziale = new GeneratoreEsponenziale(seme2,1); // variabile esponenziale con media 1
 	}
 	
-	public double getNext(){
-		
+	public double getNext(){		
 		double r = genUniforme.getNext();
 		double X = genEsponenziale.getNext();
 		
@@ -41,6 +36,7 @@ public class GeneratoreIperesp extends Generatore {
 	public GeneratoreEsponenziale getGenEsponenziale() {
 		return genEsponenziale;
 	}
+	
 
 	private double Ta;
 	private double p; //probabilità

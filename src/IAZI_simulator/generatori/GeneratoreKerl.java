@@ -4,7 +4,6 @@ public class GeneratoreKerl extends Generatore {
 
 	
 	public GeneratoreKerl(long[] seme, int stadi, double Ta){
-		
 		super();
 		if(seme.length==stadi){ // un valore di seme per ogni gen. esp. del centro erlangiano
 			this.Ta = Ta;
@@ -19,7 +18,6 @@ public class GeneratoreKerl extends Generatore {
 	}
 	
 	public double getNext(){
-		
 		double t=0;
 		for(int i=0; i<gen.length; i++){
 			t+=gen[i].getNext();
@@ -39,7 +37,6 @@ public class GeneratoreKerl extends Generatore {
 	public GeneratoreEsponenziale[] getGen() {
 		return gen;
 	}
-
 	
 	private double Ta;
 	private int k;  //numero degli stadi

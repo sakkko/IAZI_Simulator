@@ -1,5 +1,10 @@
 package IAZI_simulator.eventi;
 
+import IAZI_simulator.entita.Calendario;
+import IAZI_simulator.entita.Impianto;
+import IAZI_simulator.exception.CentroException;
+import IAZI_simulator.exception.EventoException;
+
 /* Gli eventi che vanno presi in considerazione sono:
  * 
  * - FineTerminali (arrivo di un utente);
@@ -11,16 +16,19 @@ package IAZI_simulator.eventi;
  * Ad ogni evento è quindi associato un tempo di fine servizio ed una routine di azione
  */
 
-public abstract class Evento {
+public abstract class Evento {	
 	
 	protected String nomeEvento; //identificativo di un evento
 	protected double tempo_fine_evento;
+	protected int idCentro;
 	
 	
-	public Evento(String nomeEvento, double tempo_fine_evento){
-		
+	public abstract void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException;
+	
+	public Evento(String nomeEvento, double tempo_fine_evento, int idCentro) {		
 		this.nomeEvento = nomeEvento;
 		this.tempo_fine_evento = tempo_fine_evento;
+		this.idCentro = idCentro;
 	}
 	
 	public String getNomeEvento() {
@@ -39,7 +47,8 @@ public abstract class Evento {
 		tempo_fine_evento = tempoFineEvento;
 	}
 	
-	public abstract void routine();
-
+	public int getIdCentro() {
+		return idCentro;
+	}	
 
 }

@@ -19,7 +19,8 @@ public abstract class Generatore {
 	}
 	
 	public abstract double getNext();
-	
+
+
 	double media;
 	double varianza;
 

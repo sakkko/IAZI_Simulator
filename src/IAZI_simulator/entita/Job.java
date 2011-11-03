@@ -5,14 +5,15 @@ public class Job {
 	private double tempoInizioServizio; //tempo in cui il job entra nel centro
 	private String classe; 
 	private int id;
+	private boolean nuovo;
 	private static int cont;
 	
 	public Job() {
-		
 		this.tempoInizioServizio = 0.0;
 		this.id = cont;
-		cont++;
+		cont ++;
 		this.classe = "A";
+		this.nuovo = true;
 	}
 	
 	public double getTempoInizioServizio() {
@@ -34,5 +35,17 @@ public class Job {
 	public int getId(){
 		return id;
 	}
+
+	public boolean isNuovo() {
+		return nuovo;
+	}
+
+	public void setNuovo(boolean nuovo) {
+		this.nuovo = nuovo;
+	}
+	
+	
+	
+	
 
 }

@@ -2,55 +2,50 @@ package IAZI_simulator.generatori;
 
 public class TestGeneratoreUniforme {
 	
-	public static void main(String[] args){  // chiQuadro Test
-		
-		int nrun = 1000000; //num. osservazioni, deve essere minore del periodo e maggiore di 5volte del numero delle classi
-		
-		int numero_classi = 20;
-		int[] classi = new int[numero_classi];
-		
+	public static boolean ChiQuadroTest(Generatore gen) {
+		int nrun = 10000;
+		int numeroClassi = 20;
+		int[] classi = new int[numeroClassi];
+		double numeroGenerato;
 		int k=0;
+		int sospetti = 0;
+		double V;
 		
-		while( k < numero_classi){
-			classi[k]=0;
-			k++;
+		for (int i = 0; i < 3; i ++) {
+			k = 0;
+			while (k < numeroClassi) {
+				classi[k] = 0;
+				k ++;
+			}
+			
+			for (int j = 0; j < nrun; j ++) {
+				numeroGenerato = gen.getNext();
+				classi[(int)(numeroGenerato * numeroClassi)] ++;
+			}
+			V = 0;
+			for (int j = 0; j < numeroClassi; j ++) {
+				V += Math.pow(classi[j] - (nrun / numeroClassi), 2) / (1.0/numeroClassi);
+			}
+			
+			V /= nrun;
+			
+			if (V < 7.63 || V > 36.19) {
+				//RIGETTO
+				return false;
+			}
+			
+			if (V < 11.7 || V > 27.2) {
+				//SOSPETTO
+				sospetti ++;
+			}
 		}
 		
-		double prob_attesa = (double)nrun/numero_classi; //valore atteso dei numeri in ciascun intervallo
-		long[] semi = new long[3];
-		semi[0]=555555557;
-		semi[1]=12213455;
-		semi[2]=1073357;
-		
-		//Un test chiQuadro è fatto almeno 3 volte su differenti sequenze di osservazioni e se almeno due
-		//dei tre risultati sono sospetti, i numeri non sono considerati sufficientemente random
-		
-		for(int z=0; z<3; z++){
-			
-			System.out.println( " ******** SEQUENZA NUMERO " + z + ": ********* \n");
-
-			
-			Generatore g = null;
-			g = new GeneratoreUniforme(semi[z]);
-
-			for(int i=0; i<nrun; i++){
-			
-				double numgenerato= g.getNext();
-				classi[(int)(numero_classi*numgenerato)]++; //proprietà di distribuzione degli interi tra 0 e 29
-			}
-		
-			double V = 0; //variabile di distribuzione
-		
-			for(int j=0; j<numero_classi; j++){
-			
-				V += Math.pow(classi[j] - (prob_attesa), 2);		
-		   
-			System.out.println("-----"+((double)j/20)+"-"+((double)(j+1)/20)+"-----");
-			System.out.println("contatore-->"+classi[j]);
-			System.out.println(" V = " + (double)(V/prob_attesa) + "\n");
-			}
-
-
+		if (sospetti < 2) {
+			return true;
+		} else {
+			return false;
 		}
+		
+		
 	}
 }

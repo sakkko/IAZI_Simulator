@@ -35,4 +35,5 @@ public class GeneratoreEsponenziale extends Generatore {
 	
 	private GeneratoreUniforme genUniforme;
 	private double Ta;
+	
 }
