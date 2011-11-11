@@ -23,9 +23,9 @@ public class FineDisk extends Evento {
 			throw new CentroException("Disk " + disk.getId() + ": centro vuoto");
 		}
 		
-		next_time = imp.getServerPC().get(idCentro).aggiungiJob(job, cal.getClock().getTempo_di_simulazione());
+		next_time = imp.getServerPC().get(idCentro).aggiungiJob(job);
 		if (next_time == -1) {
-			System.out.println("PcHS " + idCentro + ": job inserito nella coda");
+			//System.out.println("PcHS " + idCentro + ": job inserito nella coda");
 			return;
 		} else {
 			cal.aggiungiEvento(new FinePcHS("fine_pchs", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
@@ -34,7 +34,7 @@ public class FineDisk extends Evento {
 		job = disk.prelevaJob();
 		
 		if (job != null) {
-			next_time = disk.aggiungiJob(job, cal.getClock().getTempo_di_simulazione());
+			next_time = disk.aggiungiJob(job);
 			if (next_time == -1) {
 				throw new CentroException("Disk " + disk.getId() + ": centro occupato");
 			} else {

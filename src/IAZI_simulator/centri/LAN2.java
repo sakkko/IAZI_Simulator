@@ -16,16 +16,15 @@ public class LAN2 extends Centro {
 	
 	public LAN2(long seme){
 		this.id = cont;
-		cont ++;
+		cont = (cont + 1) % 12;
 		this.gen_espA = new GeneratoreEsponenziale(seme, LAN2.TEMPO_MEDIO_SERVIZIO_A);
 		this.gen_espB = new GeneratoreEsponenziale(seme, LAN2.TEMPO_MEDIO_SERVIZIO_B);
 	}
 	
 	//aggiunge un job al centro 
-	public double aggiungiJob(Job job, double tempoInizioServizio){
+	public double aggiungiJob(Job job){
 		String classe = job.getClasse();		
 		setJob(job);
-		setInizioServizioJob(tempoInizioServizio);
 	
 		if(classe.equals("A")){
 			return this.gen_espA.getNext();
@@ -38,6 +37,9 @@ public class LAN2 extends Centro {
 		return id;
 	}
 	
+	public long getNuovoSeme() {
+		return gen_espA.getProssimoSeme()[0];
+	}
 	
 	
 	

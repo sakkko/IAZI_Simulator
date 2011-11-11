@@ -3,6 +3,7 @@ package IAZI_simulator.entita;
 import java.util.ArrayList;
 
 import IAZI_simulator.centri.*;
+import IAZI_simulator.eventi.FineLAN1;
 import IAZI_simulator.exception.GeneratoreException;
 import IAZI_simulator.generatori.*;
 
@@ -20,16 +21,17 @@ public class Impianto {
 		}
 		
 		clientPC = new ArrayList<PcHC>(nClient);
-		while (i < nClient * 2) {
+		for (int k = 0; k < nClient; k ++) {
 			clientPC.add(new PcHC(semi[i], semi[i + 1]));
 			i += 2;
-		}
+		}		
 		
 		lan1 = new ArrayList<LAN1>();
 		for (int k = 0; k < nClient; k ++) {
 			lan1.add(new LAN1(semi[i], semi[i + 1]));
 			i += 2;
 		}
+		FineLAN1.setJobTerminati(0);
 		
 		gw1 = new GW1(semi[i], semi[i + 1]);
 		i += 2;
@@ -77,6 +79,81 @@ public class Impianto {
 			
 		gen = new GeneratoreUniforme(semi[i]);
 	
+	}
+	
+	public long[] getNuoviSemi() {
+		long[] ret = new long[153];
+		long[] tmp_semi;
+		
+		int i;
+		
+		for (i = 0; i < nClient; i ++) {
+			ret[i] = terminali.get(i).getNuovoSeme();
+		}
+		
+		for (PcHC cpc : clientPC) {
+			tmp_semi = cpc.getNuovoSeme();
+			for (int j = 0; j < tmp_semi.length; j ++) {
+				ret[i] = tmp_semi[j];
+				i ++;
+			}		
+		}			
+		
+		for (LAN1 ln1 : lan1) {
+			tmp_semi = ln1.getNuovoSeme();
+			for (int j = 0; j < tmp_semi.length; j ++) {
+				ret[i] = tmp_semi[j];
+				i ++;
+			}	
+		}
+		
+		tmp_semi = gw1.getNuovoSeme();
+		for (int j = 0; j < tmp_semi.length; j ++) {
+			ret[i] = tmp_semi[j];
+			i ++;
+		}	
+		
+		for (WAN wn : wan) {
+			tmp_semi = wn.getNuovoSeme();
+			for (int j = 0; j < tmp_semi.length; j ++) {
+				ret[i] = tmp_semi[j];
+				i ++;
+			}
+		}
+		
+		tmp_semi = gw2.getNuovoSeme();
+		for (int j = 0; j < tmp_semi.length; j ++) {
+			ret[i] = tmp_semi[j];
+			i ++;
+		}	
+		
+		for (LAN2 ln2 : lan2) {
+			ret[i] = ln2.getNuovoSeme();
+			i ++;
+		}
+		
+		for (PcHS spc : serverPC) {
+			tmp_semi = spc.getNuovoSeme();
+			for (int j = 0; j < tmp_semi.length; j ++) {
+				ret[i] = tmp_semi[j];
+				i ++;
+			}		
+		}
+		
+		for (Disk sdk : serverDisk) {
+			tmp_semi = sdk.getNuovoSeme();
+			for (int j = 0; j < tmp_semi.length; j ++) {
+				ret[i] = tmp_semi[j];
+				i ++;
+			}
+			ret[i] = sdk.getNuovoSemeCoda()[0];
+			i ++;
+		}
+		
+		ret[i] = gen.getProssimoSeme()[0];
+		
+		
+		return ret;
 	}
 	
 	

@@ -19,14 +19,13 @@ public class WAN extends Centro {
 		}
 		
 		this.id = cont;
-		cont ++;
+		cont = (cont + 1) % 12;
 		this.gen_4erlang = new GeneratoreKerl(seme, 4, WAN.TEMPO_MEDIO_SERVIZIO);
 	}
 	
 	//aggiunge un job al centro 
-	public double aggiungiJob(Job job, double tempoInizioServizio){		
+	public double aggiungiJob(Job job){		
 		setJob(job);
-		setInizioServizioJob(tempoInizioServizio);
 		return gen_4erlang.getNext(); //ritorno il prossimo tempo in cui il centro sarà pronto peer un nuovo servizio
 	}
 
@@ -38,6 +37,9 @@ public class WAN extends Centro {
 		return id;
 	}
 	
+	public long[] getNuovoSeme() {
+		return gen_4erlang.getProssimoSeme();
+	}
 	
 
 }

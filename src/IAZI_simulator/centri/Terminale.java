@@ -14,13 +14,12 @@ public class Terminale extends Centro {
 	public Terminale(long seme){
 		super();
 		this.setId(cont);
-		cont ++;
+		cont = (cont + 1) % 12;
 		this.gen_esp = new GeneratoreEsponenziale(seme, Terminale.TEMPO_MEDIO_SERVIZIO);
 	}
 	
-	public double aggiungiJob(Job job, double tempoInizioServizio){
+	public double aggiungiJob(Job job){
 		setJob(job);
-		setInizioServizioJob(tempoInizioServizio);
 		return gen_esp.getNext();//ritorno il prossimo tempo in cui il centro sarà pronto per un nuovo servizio
 	}
 
@@ -30,6 +29,10 @@ public class Terminale extends Centro {
 
 	public int getId() {
 		return id;
+	}
+	
+	public long getNuovoSeme() {
+		return gen_esp.getProssimoSeme()[0];
 	}
 
 }

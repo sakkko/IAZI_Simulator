@@ -15,17 +15,15 @@ public class PcHC extends Centro {
 		
 	public PcHC(long seme1, long seme2){		
 		this.id = cont;
-		cont ++;
+		cont = (cont + 1) % 12;
 		this.gen_iperesp = new GeneratoreIperesp(seme1, seme2, 0.6, PcHC.TEMPO_MEDIO_SERVIZIO);
 	}
 	
 	//aggiunge un job al centro
-	public double aggiungiJob(Job job, double tempoInizioServizio){
+	public double aggiungiJob(Job job){
 		
 		setJob(job);
-		this.setInizioServizioJob(tempoInizioServizio);
 		return gen_iperesp.getNext(); //ritorno il prossimo tempo in cui il centro sarà pronto per un nuovo servizio
-										//(credo che questo valore serva per aggiornare il calendario degli eventi!)
 	}
 
 
@@ -35,6 +33,10 @@ public class PcHC extends Centro {
 
 	public int getId() {
 		return id;
+	}
+	
+	public long[] getNuovoSeme() {
+		return gen_iperesp.getProssimoSeme();
 	}
 	
 	

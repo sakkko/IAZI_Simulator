@@ -38,6 +38,14 @@ public class GeneratoreKerl extends Generatore {
 		return gen;
 	}
 	
+	public long[] getProssimoSeme() {
+		long[] ret = new long[k];
+		for (int i = 0; i < k; i ++) {
+			ret[i] = gen[i].getProssimoSeme()[0];
+		}
+		return ret;
+	}
+	
 	private double Ta;
 	private int k;  //numero degli stadi
 	private GeneratoreEsponenziale[] gen;

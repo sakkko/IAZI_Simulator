@@ -45,7 +45,7 @@ public abstract class Centro {
 	}
 
 	//aggiunge un job al centro se è libero, altrimenti lo mette in coda(dove prevista)
-	public abstract double aggiungiJob(Job job, double tempoInizioServizio);
+	public abstract double aggiungiJob(Job job);
 	
 	
 }

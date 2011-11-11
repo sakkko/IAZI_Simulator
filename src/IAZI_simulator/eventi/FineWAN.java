@@ -25,17 +25,17 @@ public class FineWAN extends Evento {
 		}
 		
 		if (job.getClasse().equals("A")) {
-			next_time = imp.getGw2().aggiungiJob(job, cal.getClock().getTempo_di_simulazione());
+			next_time = imp.getGw2().aggiungiJob(job);
 			if (next_time == -1) {
-				System.out.println("GW2: job inserito nella coda");
+				//System.out.println("GW2: job inserito nella coda");
 				return;
 			} else {
 				cal.aggiungiEvento(new FineGW2("fine_gw2", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
 			}
 		} else {
-			next_time = imp.getGw1().aggiungiJob(job, cal.getClock().getTempo_di_simulazione());
+			next_time = imp.getGw1().aggiungiJob(job);
 			if (next_time == -1) {
-				System.out.println("GW1: job inserito nella coda");
+				//System.out.println("GW1: job inserito nella coda");
 				return;
 			} else {
 				cal.aggiungiEvento(new FineGW1("fine_gw1", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));

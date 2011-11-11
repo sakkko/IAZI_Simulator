@@ -17,20 +17,19 @@ public class PcHS extends Centro {
 	public PcHS(long seme1, long seme2){		
 		super();
 		this.id = cont;
-		cont ++;
+		cont = (cont + 1) % 3;
 		this.gen_iperesp = new GeneratoreIperesp(seme1, seme2, 0.6, PcHS.TEMPO_MEDIO_SERVIZIO);
 		this.FIFO = new FIFO();
 	}
 	
 	//aggiunge un job al centro se è libero, altrimenti lo mette in coda
-	public double aggiungiJob(Job job, double tempoInizioServizio){
+	public double aggiungiJob(Job job){
 		
 		if(this.isOccupato()){
 			this.FIFO.inserisciJob(job);
 			return -1; //il valore -1 afferma che il centro è occupato
 		} else {	
 			setJob(job);
-			this.setInizioServizioJob(tempoInizioServizio);
 			this.setOccupato(true);
 			
 			return gen_iperesp.getNext(); 
@@ -52,6 +51,10 @@ public class PcHS extends Centro {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public long[] getNuovoSeme() {
+		return gen_iperesp.getProssimoSeme();
 	}
 
 	

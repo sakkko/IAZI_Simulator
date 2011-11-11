@@ -29,12 +29,12 @@ public class FinePcHS extends Evento {
 		//prob di diramazione, 1/51 vado verso LAN2, 50/51 torno al disk
 		if (prob < 1.0/51.0) {
 			job.setClasse("B");
-			next_time = imp.getLan2().get(job.getId()).aggiungiJob(job, cal.getClock().getTempo_di_simulazione());
+			next_time = imp.getLan2().get(job.getId()).aggiungiJob(job);
 			cal.aggiungiEvento(new FineLAN2("fine_lan2", cal.getClock().getTempo_di_simulazione() + next_time, job.getId()));
 		} else {
-			next_time = imp.getServerDisk().get(idCentro).aggiungiJob(job, cal.getClock().getTempo_di_simulazione());
+			next_time = imp.getServerDisk().get(idCentro).aggiungiJob(job);
 			if (next_time == -1) {
-				System.out.println("Disk " + idCentro + ": job inserito nella coda");
+				//System.out.println("Disk " + idCentro + ": job inserito nella coda");
 				return;
 			} else {
 				cal.aggiungiEvento(new FineDisk("fine_disk", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
@@ -44,7 +44,7 @@ public class FinePcHS extends Evento {
 		job = pchs.prelevaJob();
 		
 		if (job != null) {
-			next_time = pchs.aggiungiJob(job, cal.getClock().getTempo_di_simulazione());
+			next_time = pchs.aggiungiJob(job);
 			if (next_time == -1) {
 				throw new CentroException("PcHS " + pchs.getId() + ": centro occupato");
 			} else {

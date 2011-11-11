@@ -37,6 +37,12 @@ public class GeneratoreIperesp extends Generatore {
 		return genEsponenziale;
 	}
 	
+	public long[] getProssimoSeme() {
+		long[] ret = new long[2];
+		ret[0] = genUniforme.getProssimoSeme()[0];
+		ret[1] = genEsponenziale.getProssimoSeme()[0];
+		return ret;
+	}
 
 	private double Ta;
 	private double p; //probabilità

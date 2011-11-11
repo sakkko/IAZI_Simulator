@@ -6,12 +6,12 @@ public class Job {
 	private String classe; 
 	private int id;
 	private boolean nuovo;
-	private static int cont;
+	private static int cont = 0;
 	
 	public Job() {
 		this.tempoInizioServizio = 0.0;
 		this.id = cont;
-		cont ++;
+		cont = (cont + 1) % 12;
 		this.classe = "A";
 		this.nuovo = true;
 	}

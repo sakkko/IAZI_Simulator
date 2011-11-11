@@ -19,6 +19,8 @@ public abstract class Generatore {
 	}
 	
 	public abstract double getNext();
+	
+	public abstract long[] getProssimoSeme();
 
 
 	double media;

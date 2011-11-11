@@ -26,13 +26,12 @@ public class FineTerminale extends Evento {
 			throw new CentroException("Terminale " + term.getId() + ": centro vuoto");
 		}
 		
-		if (job.getClasse().equals("B")) {
-			System.out.println("GIRO COMPLETATO");			
+		if (job.getClasse().equals("B")) {			
 			job.setClasse("A");
-			System.exit(1);
+			job.setNuovo(true);
 		}
 		
-		next_time = imp.getClientPC().get(idCentro).aggiungiJob(job, cal.getClock().getTempo_di_simulazione());		
+		next_time = imp.getClientPC().get(idCentro).aggiungiJob(job);		
 		cal.aggiungiEvento(new FinePcHC("fine_pchc", cal.getClock().getTempo_di_simulazione() + (next_time), idCentro));
 	}
 

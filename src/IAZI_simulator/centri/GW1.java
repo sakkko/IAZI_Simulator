@@ -20,13 +20,12 @@ public class GW1 extends Centro {
 	}
 	
 	//aggiunge un job al centro se è libero, altrimenti lo mette in coda
-	public double aggiungiJob(Job job, double tempoInizioServizio){		
+	public double aggiungiJob(Job job){		
 		if (this.isOccupato()) {
 			this.LIFO.inserisciJob(job);
 			return -1; //il valore -1 afferma che il centro è occupato
 		} else {
-			setJob(job);
-			this.setInizioServizioJob(tempoInizioServizio);
+			setJob(job);			
 			setOccupato(true);			
 			return gen_iperesp.getNext(); //ritorno il prossimo tempo in cui il centro sarà pronto peer un nuovo servizio
 		}
@@ -38,6 +37,10 @@ public class GW1 extends Centro {
 		} else { 
 			return null;
 		}
+	}
+	
+	public long[] getNuovoSeme() {
+		return gen_iperesp.getProssimoSeme();
 	}
 	
 

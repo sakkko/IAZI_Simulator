@@ -25,17 +25,17 @@ public class FineGW2 extends Evento {
 		}
 		
 		if (job.getClasse().equals("A")) {
-			next_time = imp.getLan2().get(idCentro).aggiungiJob(job, cal.getClock().getTempo_di_simulazione());
+			next_time = imp.getLan2().get(idCentro).aggiungiJob(job);
 			cal.aggiungiEvento(new FineLAN2("fine_lan2", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));			
 		} else {
-			next_time = imp.getWan().get(idCentro).aggiungiJob(job, cal.getClock().getTempo_di_simulazione());
+			next_time = imp.getWan().get(idCentro).aggiungiJob(job);
 			cal.aggiungiEvento(new FineWAN("fine_wan", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
 		}
 		
 		job = gw2.prelevaJob();
 		
 		if (job != null) {
-			next_time = gw2.aggiungiJob(job, cal.getClock().getTempo_di_simulazione());
+			next_time = gw2.aggiungiJob(job);
 			if (next_time == -1) {
 				throw new CentroException("GW2: centro occupato");
 			} else {

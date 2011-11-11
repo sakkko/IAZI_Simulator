@@ -31,4 +31,8 @@ public class RAND extends Coda{
 			return false;
 	}
 	
+	public long getNuovoSeme() {
+		return generatore_uniforme.getProssimoSeme()[0];
+	}
+	
 }

@@ -57,73 +57,19 @@ public class GeneratoreUniforme extends Generatore {
 			return current;
 		}
 	}
-
-	int nGenerati;
-
-	//main di prova
-	public static void main(String args[]){
-		
-		/*
-		long[] semi = new long[2];
-		semi[0]=83609;
-		semi[1]=12301;
-				
-		//int stadi = 3;
-		Generatore gen = new GeneratoreUniforme(semi[0]); //il seme deve essere dispari
-		double sum = 0;
-		int nrun = 0;
-		double app = 0;
-		
-		for(int i=0; i<1000; i++){
-			
-			app = gen.getNext();
-			System.out.println(app + "\n");
-			sum+=app;
-			nrun++;
-		}
-		
-		System.out.println("***********");
-		System.out.println(" somma = " + sum + ";" + " media = " + (sum/nrun) );
-		*/
-		
-		long seme = 12301;
-		GeneratoreUniforme gen = new GeneratoreUniforme(seme);		
-		long app = gen.getLong();
-		System.out.println("X0 = " + app);
-		long app2;
-		long n = 0;
-		
-		while (true) {
-			app2 = gen.getLong();
-			n ++;
-			if (app2 == app) {
-				break;
-			}
-		}
-		
-		System.out.println("N = " + n);
-		seme = 83609;
-		gen = new GeneratoreUniforme(seme);
-		app = gen.getLong();
-
-		while (true) {
-			app2 = gen.getLong();
-			n ++;
-			if (app2 == app) {
-				break;
-			}
-		}
-		
-		System.out.println("N = " + n);
-		
-		
-		
+	
+	public long[] getProssimoSeme() {
+		long[] ret = new long[1];
+		ret[0] = current;
+		return ret;
 	}
 
+	int nGenerati;
 	long seme;
 	long modulo;
 	long moltiplicatore;
 	long current;
+	long prossimaBase;
 }
 
 

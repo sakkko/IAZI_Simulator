@@ -28,17 +28,17 @@ public class FineLAN2 extends Evento{
 		if (job.getClasse().equals("A")) {
 			//con probabilità uniforme scelgo il server a cui passare il job
 			prob = imp.getProbabilitaDiramazione();
-			next_time = imp.getServerPC().get((int)(prob * 3)).aggiungiJob(job, cal.getClock().getTempo_di_simulazione());
+			next_time = imp.getServerPC().get((int)(prob * 3)).aggiungiJob(job);
 			if (next_time == -1) {
-				System.out.println("PcHS " + (int)(prob * 3) + ": job inserito nella coda");
+				//System.out.println("PcHS " + (int)(prob * 3) + ": job inserito nella coda");
 				return;
 			} else {
 				cal.aggiungiEvento(new FinePcHS("fine_pchs", cal.getClock().getTempo_di_simulazione() + next_time, (int)(prob * 3)));
 			}
 		} else {
-			next_time = imp.getGw2().aggiungiJob(job, cal.getClock().getTempo_di_simulazione());
+			next_time = imp.getGw2().aggiungiJob(job);
 			if (next_time == -1) {
-				System.out.println("GW2: job inserito nella coda");
+				//System.out.println("GW2: job inserito nella coda");
 				return;
 			} else {
 				cal.aggiungiEvento(new FineGW2("fine_gw2", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));

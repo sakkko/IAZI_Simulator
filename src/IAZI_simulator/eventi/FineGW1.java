@@ -27,19 +27,19 @@ public class FineGW1 extends Evento {
 		}
 		
 		if (job.getClasse().equals("A")) {			
-			next_time = imp.getWan().get(idCentro).aggiungiJob(job, cal.getClock().getTempo_di_simulazione());
+			next_time = imp.getWan().get(idCentro).aggiungiJob(job);
 			cal.aggiungiEvento(new FineWAN("fine_wan", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
 		} else {
-			next_time = imp.getLan1().get(idCentro).aggiungiJob(job, cal.getClock().getTempo_di_simulazione());
+			next_time = imp.getLan1().get(idCentro).aggiungiJob(job);
 			cal.aggiungiEvento(new FineLAN1("fine_lan1", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));			
 		}
 		
 		if ((job = gw1.prelevaJob()) != null) {
-			next_time = gw1.aggiungiJob(job, cal.getClock().getTempo_di_simulazione());
+			next_time = gw1.aggiungiJob(job);
 			if (next_time == -1) {
 				throw new CentroException("GW1 : centro occupato");
 			} else {
-				cal.aggiungiEvento(new FineGW1("file_gw1", cal.getClock().getTempo_di_simulazione() + next_time, job.getId()));
+				cal.aggiungiEvento(new FineGW1("fine_gw1", cal.getClock().getTempo_di_simulazione() + next_time, job.getId()));
 			}
 		}
 		

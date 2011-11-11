@@ -16,16 +16,15 @@ public class LAN1 extends Centro {
 	
 	public LAN1(long seme1, long seme2){
 		this.id = cont;
-		cont ++;
+		cont = (cont + 1) % 12;
 		this.gen_iperespA = new GeneratoreIperesp(seme1, seme2, 0.3, LAN1.TEMPO_MEDIO_SERVIZIO_A);
 		this.gen_iperespB = new GeneratoreIperesp(seme1, seme2, 0.3, LAN1.TEMPO_MEDIO_SERVIZIO_B);
 	}
 	
 	//aggiunge un job al centro
-	public double aggiungiJob(Job job, double tempoInizioServizio){
+	public double aggiungiJob(Job job){
 		String classe = job.getClasse();
 		setJob(job);
-		setInizioServizioJob(tempoInizioServizio);
 			
 		if(classe.equals("A")){
 			return this.gen_iperespA.getNext();
@@ -39,6 +38,9 @@ public class LAN1 extends Centro {
 		return id;
 	}
 	
+	public long[] getNuovoSeme() {
+		return gen_iperespA.getProssimoSeme();
+	}
 	
 	
 	

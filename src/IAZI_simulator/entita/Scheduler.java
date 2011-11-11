@@ -1,5 +1,6 @@
 package IAZI_simulator.entita;
 
+import IAZI_simulator.eventi.Evento;
 import IAZI_simulator.exception.CentroException;
 import IAZI_simulator.exception.EventoException;
 
@@ -19,13 +20,12 @@ public class Scheduler {
 		return impianto;
 	}
 	
-	//TEST - CONTINUO A SCHEDULARE EVENTI, SARA' LA ROUTINE EVENTO A TERMINARE IL PROGRAMMA
 	public void schedule() throws CentroException, EventoException {
-		
-		for (; ;) {
-			calendario.stampaCalendario();
-			calendario.getNextEvent().routineFineEvento(calendario, impianto);
+		Evento evento = calendario.getNextEvent();
+		if (evento == null) {
+			throw new EventoException("Nessun evento in calendario");
 		}
+		evento.routineFineEvento(calendario, impianto);
 	}
 
 	private Calendario calendario;
