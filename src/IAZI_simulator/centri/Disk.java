@@ -8,7 +8,7 @@ import IAZI_simulator.generatori.GeneratoreKerl;
 
 public class Disk extends Centro{
 	
-	private static final double TEMPO_MEDIO_SERVIZIO = 0.0033; //(non se se è corretto questo valore!!)
+	private static final double TEMPO_MEDIO_SERVIZIO = 0.033;
 	private static int cont = 0;	
 
 	private int id;

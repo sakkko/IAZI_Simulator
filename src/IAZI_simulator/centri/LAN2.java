@@ -1,5 +1,6 @@
 package IAZI_simulator.centri;
 
+import IAZI_simulator.IAZI_Simulator;
 import IAZI_simulator.entita.Job;
 import IAZI_simulator.generatori.Generatore;
 import IAZI_simulator.generatori.GeneratoreEsponenziale;
@@ -16,7 +17,7 @@ public class LAN2 extends Centro {
 	
 	public LAN2(long seme){
 		this.id = cont;
-		cont = (cont + 1) % 12;
+		cont = (cont + 1) % IAZI_Simulator.N;
 		this.gen_espA = new GeneratoreEsponenziale(seme, LAN2.TEMPO_MEDIO_SERVIZIO_A);
 		this.gen_espB = new GeneratoreEsponenziale(seme, LAN2.TEMPO_MEDIO_SERVIZIO_B);
 	}

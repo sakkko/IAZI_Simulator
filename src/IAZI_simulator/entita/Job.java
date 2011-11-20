@@ -1,5 +1,7 @@
 package IAZI_simulator.entita;
 
+import IAZI_simulator.IAZI_Simulator;
+
 public class Job {
 	
 	private double tempoInizioServizio; //tempo in cui il job entra nel centro
@@ -11,7 +13,7 @@ public class Job {
 	public Job() {
 		this.tempoInizioServizio = 0.0;
 		this.id = cont;
-		cont = (cont + 1) % 12;
+		cont = (cont + 1) % IAZI_Simulator.N;
 		this.classe = "A";
 		this.nuovo = true;
 	}

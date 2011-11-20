@@ -1,5 +1,6 @@
 package IAZI_simulator.centri;
 
+import IAZI_simulator.IAZI_Simulator;
 import IAZI_simulator.entita.Job;
 import IAZI_simulator.generatori.Generatore;
 import IAZI_simulator.generatori.GeneratoreIperesp;
@@ -16,7 +17,7 @@ public class LAN1 extends Centro {
 	
 	public LAN1(long seme1, long seme2){
 		this.id = cont;
-		cont = (cont + 1) % 12;
+		cont = (cont + 1) % IAZI_Simulator.N;
 		this.gen_iperespA = new GeneratoreIperesp(seme1, seme2, 0.3, LAN1.TEMPO_MEDIO_SERVIZIO_A);
 		this.gen_iperespB = new GeneratoreIperesp(seme1, seme2, 0.3, LAN1.TEMPO_MEDIO_SERVIZIO_B);
 	}

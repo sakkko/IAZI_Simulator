@@ -26,8 +26,8 @@ public class FinePcHS extends Evento {
 		}
 		
 		prob = imp.getProbabilitaDiramazione();
-		//prob di diramazione, 1/51 vado verso LAN2, 50/51 torno al disk
-		if (prob < 1.0/51.0) {
+		//prob di diramazione, 1/201 vado verso LAN2, 200/201 torno al disk
+		if (prob < 1.0/201.0) {
 			job.setClasse("B");
 			next_time = imp.getLan2().get(job.getId()).aggiungiJob(job);
 			cal.aggiungiEvento(new FineLAN2("fine_lan2", cal.getClock().getTempo_di_simulazione() + next_time, job.getId()));

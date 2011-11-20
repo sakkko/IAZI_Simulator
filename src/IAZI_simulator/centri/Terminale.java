@@ -1,5 +1,6 @@
 package IAZI_simulator.centri;
 
+import IAZI_simulator.IAZI_Simulator;
 import IAZI_simulator.entita.Job;
 import IAZI_simulator.generatori.Generatore;
 import IAZI_simulator.generatori.GeneratoreEsponenziale;
@@ -8,13 +9,13 @@ public class Terminale extends Centro {
 	
 	private static int cont = 0;
 	private int id;
-	private static final double TEMPO_MEDIO_SERVIZIO = 25.0;//secondi
+	private static final double TEMPO_MEDIO_SERVIZIO = 12.5;//secondi
 	private Generatore gen_esp;
 	
 	public Terminale(long seme){
 		super();
 		this.setId(cont);
-		cont = (cont + 1) % 12;
+		cont = (cont + 1) % IAZI_Simulator.N;
 		this.gen_esp = new GeneratoreEsponenziale(seme, Terminale.TEMPO_MEDIO_SERVIZIO);
 	}
 	

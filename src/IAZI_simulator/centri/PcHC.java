@@ -1,12 +1,13 @@
 package IAZI_simulator.centri;
 
+import IAZI_simulator.IAZI_Simulator;
 import IAZI_simulator.entita.Job;
 import IAZI_simulator.generatori.Generatore;
 import IAZI_simulator.generatori.GeneratoreIperesp;
 
 public class PcHC extends Centro {
 
-	private static final double TEMPO_MEDIO_SERVIZIO= 3.0; //secondi
+	private static final double TEMPO_MEDIO_SERVIZIO= 2.33; //secondi
 	
 	private static int cont = 0;
 	private int id;//identificativo dell'i-esimo HOST
@@ -15,7 +16,7 @@ public class PcHC extends Centro {
 		
 	public PcHC(long seme1, long seme2){		
 		this.id = cont;
-		cont = (cont + 1) % 12;
+		cont = (cont + 1) % IAZI_Simulator.N;
 		this.gen_iperesp = new GeneratoreIperesp(seme1, seme2, 0.6, PcHC.TEMPO_MEDIO_SERVIZIO);
 	}
 	

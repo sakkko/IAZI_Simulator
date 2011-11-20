@@ -10,7 +10,7 @@ public class PcHS extends Centro {
 	
 	private static int cont = 0;
 	private int id;//identificativo dell'i-esimo HOST
-	private static final double TEMPO_MEDIO_SERVIZIO = 0.00274;//secondi
+	private static final double TEMPO_MEDIO_SERVIZIO = 0.002489;//secondi (N = 48)
 	private Generatore gen_iperesp;
 	private Coda FIFO;
 	

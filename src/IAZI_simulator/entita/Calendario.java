@@ -23,7 +23,7 @@ public class Calendario {
 	public void aggiungiEvento(Evento evento) throws EventoException{		
 		boolean aggiunto = false;
 		
-		if (evento.getTempo_fine_evento() > clock.getTempo_di_simulazione()) {
+		if (evento.getTempo_fine_evento() >= clock.getTempo_di_simulazione()) {
 			for (int i = 0; i < calendario.size(); i ++){
 				if (evento.getTempo_fine_evento() < calendario.get(i).getTempo_fine_evento()) {
 					calendario.add(i, evento);

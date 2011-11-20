@@ -1,5 +1,6 @@
 package IAZI_simulator.centri;
 
+import IAZI_simulator.IAZI_Simulator;
 import IAZI_simulator.entita.Job;
 import IAZI_simulator.exception.GeneratoreException;
 import IAZI_simulator.generatori.Generatore;
@@ -19,7 +20,7 @@ public class WAN extends Centro {
 		}
 		
 		this.id = cont;
-		cont = (cont + 1) % 12;
+		cont = (cont + 1) % IAZI_Simulator.N;
 		this.gen_4erlang = new GeneratoreKerl(seme, 4, WAN.TEMPO_MEDIO_SERVIZIO);
 	}
 	

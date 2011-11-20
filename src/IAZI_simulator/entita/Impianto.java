@@ -81,8 +81,8 @@ public class Impianto {
 	
 	}
 	
-	public long[] getNuoviSemi() {
-		long[] ret = new long[153];
+	public long[] getNuoviSemi(int size) {
+		long[] ret = new long[size];
 		long[] tmp_semi;
 		
 		int i;
