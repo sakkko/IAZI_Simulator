@@ -46,7 +46,7 @@ public class IAZI_Simulator {
 		double media_yj, media_zj, media_nj;
 		double valore_medio, s_quadro, d;
 		double inf_intervallo_confidenza, sup_intervallo_confidenza;
-		int[] valori_throughput = new int[15];
+		int[] valori_throughput = new int[N];
 		double[] misure;
 		double media_throughput = 0.0;
 		ArrayList<Double> tempiLAN2 = new ArrayList<Double>();
