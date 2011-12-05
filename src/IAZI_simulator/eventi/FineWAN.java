@@ -7,8 +7,8 @@ import IAZI_simulator.exception.EventoException;
 
 public class FineWAN extends Evento {
 
-	public FineWAN(String nomeEvento, double tempo_fine_evento, int idCentro) {
-		super(nomeEvento, tempo_fine_evento, idCentro);
+	public FineWAN(double tempo_fine_evento, int idCentro) {
+		super(Evento.FINE_WAN, tempo_fine_evento, idCentro);
 		// TODO Auto-generated constructor stub
 		
 	}
@@ -17,7 +17,7 @@ public class FineWAN extends Evento {
 	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException {
 		// TODO Auto-generated method stub
 		WAN wan = imp.getWan().get(idCentro);
-		Job job = wan.rimuoviJob();
+		job = wan.rimuoviJob();
 		double next_time;
 		
 		if (job == null) {
@@ -30,7 +30,7 @@ public class FineWAN extends Evento {
 				//System.out.println("GW2: job inserito nella coda");
 				return;
 			} else {
-				cal.aggiungiEvento(new FineGW2("fine_gw2", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
+				cal.aggiungiEvento(new FineGW2(cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
 			}
 		} else {
 			next_time = imp.getGw1().aggiungiJob(job);
@@ -38,9 +38,14 @@ public class FineWAN extends Evento {
 				//System.out.println("GW1: job inserito nella coda");
 				return;
 			} else {
-				cal.aggiungiEvento(new FineGW1("fine_gw1", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
+				cal.aggiungiEvento(new FineGW1(cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
 			}
 		}
+	}
+	
+	public String toString() {
+		String ret = "fine_wan " + super.toString();
+		return ret;
 	}
 
 }

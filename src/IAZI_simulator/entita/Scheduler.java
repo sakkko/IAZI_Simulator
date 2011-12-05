@@ -20,12 +20,13 @@ public class Scheduler {
 		return impianto;
 	}
 	
-	public void schedule() throws CentroException, EventoException {
+	public Evento schedule() throws CentroException, EventoException {
 		Evento evento = calendario.getNextEvent();
 		if (evento == null) {
 			throw new EventoException("Nessun evento in calendario");
 		}
 		evento.routineFineEvento(calendario, impianto);
+		return evento;
 	}
 
 	private Calendario calendario;

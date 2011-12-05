@@ -2,14 +2,9 @@ package IAZI_simulator;
 
 import java.util.ArrayList;
 
-import IAZI_simulator.entita.Impianto;
-import IAZI_simulator.entita.Job;
-import IAZI_simulator.entita.Scheduler;
-import IAZI_simulator.eventi.FineLAN1;
-import IAZI_simulator.eventi.FinePcHC;
-import IAZI_simulator.exception.CentroException;
-import IAZI_simulator.exception.EventoException;
-import IAZI_simulator.exception.GeneratoreException;
+import IAZI_simulator.entita.*;
+import IAZI_simulator.eventi.*;
+import IAZI_simulator.exception.*;
 import IAZI_simulator.generatori.*;
 
 public class IAZI_Simulator {
@@ -21,16 +16,18 @@ public class IAZI_Simulator {
 	
 	public final static double U_ALPHA_MEZZI = 1.96;
 	
+	public final static int LUNGHEZZA_FINESTRA = 10;
+	
 	/**
 	 * @param args
 	 */
 	public static void main(String args[]){		
 		IAZI_Simulator iazi = new IAZI_Simulator();
-		int n0 = 0;		
+		int n0 = 0, p = 100;		
 		
 		try {
 			n0 = iazi.runStabilizzazione();
-			iazi.runStatistici(n0);
+			iazi.runStatistici(n0, p);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -38,21 +35,21 @@ public class IAZI_Simulator {
 		
 	}
 	
-	public void runStatistici(int n0) throws GeneratoreException, EventoException, CentroException {
-		int p = 100;
+	public void runStatistici(int n0, int p) throws GeneratoreException, EventoException, CentroException {
 		int[] lunghezza_run = new int[p];
 		long seme = 777777777L;
 		Impianto imp;
 		Scheduler sched;
 		long[] semiGeneratori;
-		int n, count;
-		double yj, zj;
+		int n;
 		double[] vettore_yj = new double[p];
 		double media_yj, media_zj, media_nj;
-		double valore_medio, s_quadro;
-		double d;
-		double inf_intervallo_confidenza;			
-		double sup_intervallo_confidenza;
+		double valore_medio, s_quadro, d;
+		double inf_intervallo_confidenza, sup_intervallo_confidenza;
+		int[] valori_throughput = new int[15];
+		double[] misure;
+		double media_throughput = 0.0;
+		ArrayList<Double> tempiLAN2 = new ArrayList<Double>();
 		
 		for (int i = 1; i <= N; i ++) {			
 			media_yj = 0.0;
@@ -62,7 +59,8 @@ public class IAZI_Simulator {
 			lunghezza_run = getLunghezzeRun(p, seme);									
 			for (int j = 0; j < p; j ++) {
 				semiGeneratori = getSemiIniziali(seme);
-				//TODO controllare
+				//genero sempre 1 seme in più da utilizzare come seme di partenza
+				//per il run successivo
 				seme = semiGeneratori[semiGeneratori.length - 1];
 				
 				imp = new Impianto(semiGeneratori, N, 3);
@@ -73,23 +71,18 @@ public class IAZI_Simulator {
 				n = stabilizzaImpianto(sched, n0);
 				//IMPIANTO STABILIZZATO
 				
-				yj = 0.0;
-				zj = 0.0;
-				count = 0;
+				//OTTENGO MISURE DALL'IMPIANTO
+				misure = getMisure(sched, i, lunghezza_run[j], n, tempiLAN2);
 				
-				while (count < lunghezza_run[j]) {
-					sched.schedule();
-					if (n < FineLAN1.getJobTerminati()) {
-						yj += FineLAN1.getTempoRispostaJob();
-						zj += Math.pow(FineLAN1.getTempoRispostaJob(), 2);
-						n = FineLAN1.getJobTerminati();
-						count ++;
-					}
-				}
 				
-				vettore_yj[j] = yj;
-				media_yj += yj;
-				media_zj += zj;		
+				if (misure[2] >= 0) {
+					valori_throughput[(int)misure[2]] ++;
+					media_throughput += (misure[2] / (double)IAZI_Simulator.LUNGHEZZA_FINESTRA);
+				}				
+				
+				vettore_yj[j] = misure[0];
+				media_yj += misure[0];
+				media_zj += misure[1];		
 				media_nj += lunghezza_run[j];
 				
 			} //FINITI TUTTI I p RUN DI LUNGHEZZA n VARIABILE
@@ -113,7 +106,72 @@ public class IAZI_Simulator {
 			
 		}
 		
+		System.out.println("Tempi LAN2:");
+		for (int i = 0; i < tempiLAN2.size(); i ++) {
+			System.out.println(tempiLAN2.get(i));
+		}
 		
+		System.out.println("Throughput LAN2");
+		for (int i = 0; i < valori_throughput.length; i ++) {
+			System.out.println(i + ": " + valori_throughput[i]);
+		}
+		
+		System.out.println("Media throughput (N = 48): " + media_throughput / p);
+		
+		
+		
+	}
+	
+	public double[] getMisure(Scheduler sched, int client, int lunghezza_run, int job_terminati, ArrayList<Double> tempiLAN2) throws CentroException, EventoException {
+		int count = 0;
+		Evento event;
+		double clock_value = 0.0;
+		boolean window_open = false;
+		double start_window = 0.0, end_window = 0.0;
+		double[] ret = new double[3]; //0: yj, 1:zj, 3:job_count (maggiore di 0 sono nel caso di calcolo del throughput)
+		int osserv_iniziale;
+		
+		ret[0] = 0;
+		ret[1] = 0;
+		ret[2] = -1;
+		
+		//apro la finestra al centro del run
+		osserv_iniziale = lunghezza_run / 2;
+		
+		while (count < lunghezza_run) {
+			clock_value = sched.getCalendario().getClock().getTempo_di_simulazione();
+			//stimo il throughput per 48 job
+			if (client == N && count == osserv_iniziale && !window_open) {
+				start_window = clock_value;
+				end_window = clock_value + LUNGHEZZA_FINESTRA;
+				ret[2] = 0;
+				window_open = true;
+			}
+			
+			event = sched.schedule();
+			
+			if (start_window <= clock_value && clock_value <= end_window) {
+				//sono all'interno della finestra di osservazione
+				//conto i job di classe A che escono da LAN2
+				if (window_open && event.getClass().equals(FineLAN2.class)) {
+					if (event.getJob().getClass().equals("A")) {
+						ret[2] ++;
+					}
+				}
+			}
+								
+			if (job_terminati < FineLAN1.getJobTerminati()) {
+				ret[0] += FineLAN1.getTempoRispostaJob();
+				ret[1] += Math.pow(FineLAN1.getTempoRispostaJob(), 2);
+				job_terminati = FineLAN1.getJobTerminati();
+				if (client == N) {
+					tempiLAN2.add(event.getJob().getTempoFineLAN2b() - event.getJob().getTempoFineLAN2a());
+				}
+				count ++;
+			}
+		}
+		
+		return ret;
 	}
 	
 	public int stabilizzaImpianto(Scheduler sched, int n0) throws CentroException, EventoException {
@@ -205,12 +263,7 @@ public class IAZI_Simulator {
 			}						
 			valoreMedioCurvaMedieCampionarie /= osservazioni;
 			
-			System.out.println("Osservazioni: " + osservazioni + " - " + "Run: " + p + " - " + "Ripetizioni: " + ripetizioni);			
-			System.out.println("Media Campionaria: " + mediaCampionaria + " - " + "Varianza Campionaria: " + varianzaCampionaria);
-			System.out.println("Valore medio curva medie campionarie: " + valoreMedioCurvaMedieCampionarie);
-			System.out.println("Distanza tra la media e il valore medio della curva: " + Math.abs(valoreMedioCurvaMedieCampionarie - mediaCampionaria));
-			System.out.println("Massima distanza consentita: " + 0.1 * valoreMedioCurvaMedieCampionarie);			
-			System.out.println();
+			System.out.println("N0: " + osservazioni + " - Media Campionaria: " + mediaCampionaria + " - Varianza Campionaria: " + varianzaCampionaria + " - Valore medio curva: " + valoreMedioCurvaMedieCampionarie + " - Distanza: " + Math.abs(valoreMedioCurvaMedieCampionarie - mediaCampionaria) + " - Ripetizioni: " + ripetizioni);			
 			
 			if (Math.abs(valoreMedioCurvaMedieCampionarie - mediaCampionaria) < 0.1 * valoreMedioCurvaMedieCampionarie) {
 				ripetizioni --;
@@ -309,7 +362,7 @@ public class IAZI_Simulator {
 		for (int i = 0; i < nJob; i ++) {
 			job = new Job();
 			next_time = imp.getClientPC().get(job.getId()).aggiungiJob(job);
-			sched.getCalendario().aggiungiEvento(new FinePcHC("fine_pchc", next_time, job.getId()));
+			sched.getCalendario().aggiungiEvento(new FinePcHC(next_time, job.getId()));
 		}
 	}
 }

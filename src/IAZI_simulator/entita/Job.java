@@ -5,6 +5,8 @@ import IAZI_simulator.IAZI_Simulator;
 public class Job {
 	
 	private double tempoInizioServizio; //tempo in cui il job entra nel centro
+	private double tempoFineLAN2a;
+	private double tempoFineLAN2b;
 	private String classe; 
 	private int id;
 	private boolean nuovo;
@@ -16,6 +18,8 @@ public class Job {
 		cont = (cont + 1) % IAZI_Simulator.N;
 		this.classe = "A";
 		this.nuovo = true;
+		tempoFineLAN2a = 0;
+		tempoFineLAN2b = 0;
 	}
 	
 	public double getTempoInizioServizio() {
@@ -44,6 +48,22 @@ public class Job {
 
 	public void setNuovo(boolean nuovo) {
 		this.nuovo = nuovo;
+	}
+
+	public double getTempoFineLAN2a() {
+		return tempoFineLAN2a;
+	}
+
+	public double getTempoFineLAN2b() {
+		return tempoFineLAN2b;
+	}
+
+	public void setTempoFineLAN2a(double tempoFineLAN2a) {
+		this.tempoFineLAN2a = tempoFineLAN2a;
+	}
+
+	public void setTempoFineLAN2b(double tempoFineLAN2b) {
+		this.tempoFineLAN2b = tempoFineLAN2b;
 	}
 	
 	

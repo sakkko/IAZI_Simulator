@@ -7,8 +7,8 @@ import IAZI_simulator.exception.EventoException;
 
 public class FineGW2 extends Evento {
 
-	public FineGW2(String nomeEvento, double tempo_fine_evento, int idCentro) {
-		super(nomeEvento, tempo_fine_evento, idCentro);
+	public FineGW2(double tempo_fine_evento, int idCentro) {
+		super(Evento.FINE_GW2, tempo_fine_evento, idCentro);
 		// TODO Auto-generated constructor stub
 		
 	}
@@ -17,7 +17,7 @@ public class FineGW2 extends Evento {
 	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException {
 		// TODO Auto-generated method stub
 		GW2 gw2 = imp.getGw2();
-		Job job = gw2.rimuoviJob();
+		job = gw2.rimuoviJob();
 		double next_time;
 		
 		if (job == null) {
@@ -26,10 +26,10 @@ public class FineGW2 extends Evento {
 		
 		if (job.getClasse().equals("A")) {
 			next_time = imp.getLan2().get(idCentro).aggiungiJob(job);
-			cal.aggiungiEvento(new FineLAN2("fine_lan2", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));			
+			cal.aggiungiEvento(new FineLAN2(cal.getClock().getTempo_di_simulazione() + next_time, idCentro));			
 		} else {
 			next_time = imp.getWan().get(idCentro).aggiungiJob(job);
-			cal.aggiungiEvento(new FineWAN("fine_wan", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
+			cal.aggiungiEvento(new FineWAN(cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
 		}
 		
 		job = gw2.prelevaJob();
@@ -39,10 +39,15 @@ public class FineGW2 extends Evento {
 			if (next_time == -1) {
 				throw new CentroException("GW2: centro occupato");
 			} else {
-				cal.aggiungiEvento(new FineGW2("fine_gw2", cal.getClock().getTempo_di_simulazione() + next_time, job.getId()));
+				cal.aggiungiEvento(new FineGW2(cal.getClock().getTempo_di_simulazione() + next_time, job.getId()));
 			}
 		}
 		
+	}
+	
+	public String toString() {
+		String ret = "fine_gw2 " + super.toString();
+		return ret;
 	}
 
 }

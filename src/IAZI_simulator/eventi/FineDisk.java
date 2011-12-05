@@ -7,8 +7,8 @@ import IAZI_simulator.exception.EventoException;
 
 public class FineDisk extends Evento {
 
-	public FineDisk(String nomeEvento, double tempo_fine_evento, int idCentro) {
-		super(nomeEvento, tempo_fine_evento, idCentro);
+	public FineDisk(double tempo_fine_evento, int idCentro) {
+		super(Evento.FINE_DISK, tempo_fine_evento, idCentro);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -16,7 +16,7 @@ public class FineDisk extends Evento {
 	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException {
 		// TODO Auto-generated method stub
 		Disk disk = imp.getServerDisk().get(idCentro);
-		Job job = disk.rimuoviJob();
+		job = disk.rimuoviJob();
 		double next_time;
 		
 		if (job == null) {
@@ -28,7 +28,7 @@ public class FineDisk extends Evento {
 			//System.out.println("PcHS " + idCentro + ": job inserito nella coda");
 			return;
 		} else {
-			cal.aggiungiEvento(new FinePcHS("fine_pchs", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
+			cal.aggiungiEvento(new FinePcHS(cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
 		}
 		
 		job = disk.prelevaJob();
@@ -38,10 +38,15 @@ public class FineDisk extends Evento {
 			if (next_time == -1) {
 				throw new CentroException("Disk " + disk.getId() + ": centro occupato");
 			} else {
-				cal.aggiungiEvento(new FineDisk("fine_disk", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
+				cal.aggiungiEvento(new FineDisk(cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
 			}
 		}
 		
+	}
+	
+	public String toString() {
+		String ret = "fine_disk " + super.toString();
+		return ret;
 	}
 
 }

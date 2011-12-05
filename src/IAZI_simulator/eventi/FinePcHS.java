@@ -7,8 +7,8 @@ import IAZI_simulator.exception.EventoException;
 
 public class FinePcHS extends Evento {
 
-	public FinePcHS(String nomeEvento, double tempo_fine_evento, int idCentro) {
-		super(nomeEvento, tempo_fine_evento, idCentro);
+	public FinePcHS(double tempo_fine_evento, int idCentro) {
+		super(Evento.FINE_PCHS, tempo_fine_evento, idCentro);
 		// TODO Auto-generated constructor stub
 		
 	}
@@ -17,7 +17,7 @@ public class FinePcHS extends Evento {
 	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException {
 		// TODO Auto-generated method stub
 		PcHS pchs = imp.getServerPC().get(idCentro);
-		Job job = pchs.rimuoviJob();
+		job = pchs.rimuoviJob();
 		double next_time;
 		double prob;
 		
@@ -30,14 +30,14 @@ public class FinePcHS extends Evento {
 		if (prob < 1.0/201.0) {
 			job.setClasse("B");
 			next_time = imp.getLan2().get(job.getId()).aggiungiJob(job);
-			cal.aggiungiEvento(new FineLAN2("fine_lan2", cal.getClock().getTempo_di_simulazione() + next_time, job.getId()));
+			cal.aggiungiEvento(new FineLAN2(cal.getClock().getTempo_di_simulazione() + next_time, job.getId()));
 		} else {
 			next_time = imp.getServerDisk().get(idCentro).aggiungiJob(job);
 			if (next_time == -1) {
 				//System.out.println("Disk " + idCentro + ": job inserito nella coda");
 				return;
 			} else {
-				cal.aggiungiEvento(new FineDisk("fine_disk", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
+				cal.aggiungiEvento(new FineDisk(cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
 			}
 		}
 		
@@ -48,10 +48,15 @@ public class FinePcHS extends Evento {
 			if (next_time == -1) {
 				throw new CentroException("PcHS " + pchs.getId() + ": centro occupato");
 			} else {
-				cal.aggiungiEvento(new FinePcHS("fine_pchs", cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
+				cal.aggiungiEvento(new FinePcHS(cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
 			}
 		}
 		
+	}
+	
+	public String toString() {
+		String ret = "fine_pchs " + super.toString();
+		return ret;
 	}
 
 }

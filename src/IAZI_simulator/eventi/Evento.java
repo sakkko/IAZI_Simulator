@@ -2,6 +2,7 @@ package IAZI_simulator.eventi;
 
 import IAZI_simulator.entita.Calendario;
 import IAZI_simulator.entita.Impianto;
+import IAZI_simulator.entita.Job;
 import IAZI_simulator.exception.CentroException;
 import IAZI_simulator.exception.EventoException;
 
@@ -18,9 +19,20 @@ import IAZI_simulator.exception.EventoException;
 
 public abstract class Evento {	
 	
+	public final static String FINE_DISK = "fine_disk";
+	public final static String FINE_GW1 = "fine_gw1";
+	public final static String FINE_GW2 = "fine_gw2";
+	public final static String FINE_LAN1 = "fine_lan1";
+	public final static String FINE_LAN2 = "fine_lan2";
+	public final static String FINE_PCHC = "fine_pchc";
+	public final static String FINE_PCHS = "fine_pchs";
+	public final static String FINE_TERMINALE = "fine_terminale";
+	public final static String FINE_WAN = "fine_wan";
+	
 	protected String nomeEvento; //identificativo di un evento
 	protected double tempo_fine_evento;
 	protected int idCentro;
+	protected Job job;
 	
 	
 	public abstract void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException;
@@ -49,6 +61,16 @@ public abstract class Evento {
 	
 	public int getIdCentro() {
 		return idCentro;
+	}
+
+	public Job getJob() {
+		return job;
 	}	
+	
+	public String toString() {
+		String ret = " - " + tempo_fine_evento + " - centro: " + idCentro;
+		return ret;
+	}
+	
 
 }
