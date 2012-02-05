@@ -16,7 +16,7 @@ public class IAZI_Simulator {
 	
 	public final static double U_ALPHA_MEZZI = 1.96;
 	
-	public final static int LUNGHEZZA_FINESTRA = 200;
+	public final static int LUNGHEZZA_FINESTRA = 10;
 	
 	/**
 	 * @param args
