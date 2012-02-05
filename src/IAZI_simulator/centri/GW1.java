@@ -3,6 +3,7 @@ package IAZI_simulator.centri;
 import IAZI_simulator.code.Coda;
 import IAZI_simulator.code.LIFO;
 import IAZI_simulator.entita.Job;
+import IAZI_simulator.exception.GeneratoreException;
 import IAZI_simulator.generatori.Generatore;
 import IAZI_simulator.generatori.GeneratoreIperesp;
 
@@ -17,6 +18,12 @@ public class GW1 extends Centro {
 	public GW1(long seme1, long seme2){	
 		this.gen_iperesp = new GeneratoreIperesp(seme1, seme2, 0.5, GW1.TEMPO_MEDIO_SERVIZIO);
 		this.LIFO = new LIFO();
+	}
+	
+	public GW1(GW1 gw1) throws GeneratoreException{	
+		super(gw1);
+		this.gen_iperesp = new GeneratoreIperesp(gw1.gen_iperesp);
+		this.LIFO = new LIFO((LIFO)gw1.LIFO);
 	}
 	
 	//aggiunge un job al centro se è libero, altrimenti lo mette in coda
@@ -42,6 +49,20 @@ public class GW1 extends Centro {
 	public long[] getNuovoSeme() {
 		return gen_iperesp.getProssimoSeme();
 	}
+	
+	public void setGeneratore(Generatore generatore) throws GeneratoreException {
+		if (generatore.getClass().equals(GeneratoreIperesp.class)) {
+			this.gen_iperesp = generatore;
+		} else {
+			throw new GeneratoreException("GW1: tipo generatore non valido");
+		}
+	}
+
+	public Generatore getGeneratore() {
+		return gen_iperesp;
+	}
+	
+	
 	
 
 }

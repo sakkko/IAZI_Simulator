@@ -1,6 +1,8 @@
 package IAZI_simulator.centri;
 
 import IAZI_simulator.entita.Job;
+import IAZI_simulator.exception.GeneratoreException;
+import IAZI_simulator.generatori.Generatore;
 
 /* Per ogni centro specifico andrà poi creato come attributo un identificativo unico,
  * un rispettivo generatore per la generazione dei tempi di servizio, e un rispettivo oggetto
@@ -15,6 +17,15 @@ public abstract class Centro {
 	public Centro() {
 		occupato = false;
 		job = null;
+	}
+	
+	public Centro(Centro centro) {
+		this.occupato = centro.occupato;
+		if (centro.job != null) {
+			this.job = new Job(centro.job);
+		} else {
+			this.job = null;
+		}
 	}
 	
 	public boolean isOccupato() {
@@ -46,6 +57,14 @@ public abstract class Centro {
 
 	//aggiunge un job al centro se è libero, altrimenti lo mette in coda(dove prevista)
 	public abstract double aggiungiJob(Job job);
+	
+	public Generatore getGeneratore() throws GeneratoreException {
+		throw new GeneratoreException("Centro: Operazione non supportata");
+	}
+	
+	public void setGeneratore(Generatore generatore) throws GeneratoreException {
+		throw new GeneratoreException("Centro: Operazione non supportata");
+	}
 	
 	
 }

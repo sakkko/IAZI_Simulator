@@ -2,6 +2,7 @@ package IAZI_simulator.centri;
 
 import IAZI_simulator.IAZI_Simulator;
 import IAZI_simulator.entita.Job;
+import IAZI_simulator.exception.GeneratoreException;
 import IAZI_simulator.generatori.Generatore;
 import IAZI_simulator.generatori.GeneratoreIperesp;
 
@@ -20,6 +21,13 @@ public class LAN1 extends Centro {
 		cont = (cont + 1) % IAZI_Simulator.N;
 		this.gen_iperespA = new GeneratoreIperesp(seme1, seme2, 0.3, LAN1.TEMPO_MEDIO_SERVIZIO_A);
 		this.gen_iperespB = new GeneratoreIperesp(seme1, seme2, 0.3, LAN1.TEMPO_MEDIO_SERVIZIO_B);
+	}
+	
+	public LAN1(LAN1 lan1) throws GeneratoreException{
+		super(lan1);
+		this.id = lan1.id;
+		this.gen_iperespA = new GeneratoreIperesp(lan1.gen_iperespA);
+		this.gen_iperespB = new GeneratoreIperesp(lan1.gen_iperespB);
 	}
 	
 	//aggiunge un job al centro
@@ -41,6 +49,30 @@ public class LAN1 extends Centro {
 	
 	public long[] getNuovoSeme() {
 		return gen_iperespA.getProssimoSeme();
+	}
+	
+	public void setGeneratoreA(Generatore generatore) throws GeneratoreException {
+		if (generatore.getClass().equals(GeneratoreIperesp.class)) {
+			this.gen_iperespA = generatore;
+		} else {
+			throw new GeneratoreException("LAN1(A): tipo generatore non valido");
+		}
+	}
+
+	public Generatore getGeneratoreA() {
+		return gen_iperespA;
+	}
+	
+	public void setGeneratoreB(Generatore generatore) throws GeneratoreException {
+		if (generatore.getClass().equals(GeneratoreIperesp.class)) {
+			this.gen_iperespB = generatore;
+		} else {
+			throw new GeneratoreException("LAN1(B): tipo generatore non valido");
+		}
+	}
+
+	public Generatore getGeneratoreB() {
+		return gen_iperespB;
 	}
 	
 	

@@ -15,15 +15,24 @@ public class Disk extends Centro{
 	private Generatore gen_5erlang;
 	private RAND RAND;
 	
+	private static final int N_STADI = 5;
+	
 	public Disk(long[] semiGeneratore, long semeCoda) throws GeneratoreException {
-		if (semiGeneratore.length != 5) {
-			throw new GeneratoreException("Disk " + cont + ": numero di semi non valido");
+		if (semiGeneratore.length != N_STADI) {
+			throw new GeneratoreException("Disk " + cont + ": numero di stadi del generatore non valido");
 		}
 		
 		this.id = cont;
 		cont = (cont + 1) % 3;			
 		this.gen_5erlang = new GeneratoreKerl(semiGeneratore, semiGeneratore.length, TEMPO_MEDIO_SERVIZIO);
 		this.RAND = new RAND(semeCoda);
+	}
+	
+	public Disk(Disk disk) throws GeneratoreException {
+		super(disk);
+		this.id = disk.id;			
+		this.gen_5erlang = new GeneratoreKerl(disk.gen_5erlang);
+		this.RAND = new RAND(disk.RAND);
 	}
 	
 	//aggiunge un job al centro se è libero, altrimenti lo mette in coda
@@ -64,6 +73,29 @@ public class Disk extends Centro{
 		long[] ret = new long[1];
 		ret[0] = RAND.getNuovoSeme();
 		return ret;
+	}
+
+	public Generatore getGeneratore() {
+		return gen_5erlang;
+	}
+	
+	public void setGeneratore(Generatore generatore) throws GeneratoreException {
+		if (generatore.getClass().equals(GeneratoreKerl.class)) {
+			if (((GeneratoreKerl)generatore).getK() != N_STADI) {
+				throw new GeneratoreException("Disk: numero di stadi del generatore non valido");
+			}
+			this.gen_5erlang = generatore;
+		} else {
+			throw new GeneratoreException("Disk: tipo generatore non valido");
+		}
+	}
+	
+	public Generatore getGeneratoreCoda() {
+		return RAND.getGeneratore();
+	}
+	
+	public void setGeneratoreCoda(Generatore generatore) throws GeneratoreException {
+		RAND.setGeneratore(generatore);
 	}
 	
 

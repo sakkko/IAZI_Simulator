@@ -16,17 +16,17 @@ public class IAZI_Simulator {
 	
 	public final static double U_ALPHA_MEZZI = 1.96;
 	
-	public final static int LUNGHEZZA_FINESTRA = 10;
+	public final static int LUNGHEZZA_FINESTRA = 200;
 	
 	/**
 	 * @param args
 	 */
 	public static void main(String args[]){		
 		IAZI_Simulator iazi = new IAZI_Simulator();
-		int n0 = 0, p = 100;		
+		int n0 = 2558, p = 100;		
 		
 		try {
-			n0 = iazi.runStabilizzazione();
+			//n0 = iazi.runStabilizzazione();
 			iazi.runStatistici(n0, p);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -38,10 +38,10 @@ public class IAZI_Simulator {
 	public void runStatistici(int n0, int p) throws GeneratoreException, EventoException, CentroException {
 		int[] lunghezza_run = new int[p];
 		long seme = 777777777L;
-		Impianto imp;
-		Scheduler sched;
-		long[] semiGeneratori;
-		int n;
+		Impianto imp, impStabile = null;
+		Scheduler sched, schedStabile = null;
+		long[] semiIniziali;
+		int n = 0;
 		double[] vettore_yj = new double[p];
 		double media_yj, media_zj, media_nj;
 		double valore_medio, s_quadro, d;
@@ -50,30 +50,36 @@ public class IAZI_Simulator {
 		double[] misure;
 		double media_throughput = 0.0;
 		ArrayList<Double> tempiLAN2 = new ArrayList<Double>();
+		ArrayList<Generatore> generatori = null;
+		Generatore genRun = new GeneratoreUniforme(seme);
+		
+		semiIniziali = getSemiIniziali();
 		
 		for (int i = 1; i <= N; i ++) {			
 			media_yj = 0.0;
 			media_zj = 0.0;
-			media_nj = 0.0;
+			media_nj = 0.0;		
 			
-			lunghezza_run = getLunghezzeRun(p, seme);									
+			lunghezza_run = getLunghezzeRun(p, genRun);									
 			for (int j = 0; j < p; j ++) {
-				semiGeneratori = getSemiIniziali(seme);
-				//genero sempre 1 seme in più da utilizzare come seme di partenza
-				//per il run successivo
-				seme = semiGeneratori[semiGeneratori.length - 1];
-				
-				imp = new Impianto(semiGeneratori, N, 3);
+			
+				imp = new Impianto(semiIniziali, N, 3);
 				sched = new Scheduler(imp);				
 				caricaJob(imp, sched, i);
 								
 				//STABILIZZAZIONE
 				n = stabilizzaImpianto(sched, n0);
-				//IMPIANTO STABILIZZATO
-				
+				//IMPIANTO STABILIZZATO						
+	
+				if (j > 0) {
+					//EREDITO GENERATORI RUN PRECEDENTE
+					imp.setGeneratori(generatori);
+				}
 				//OTTENGO MISURE DALL'IMPIANTO
 				misure = getMisure(sched, i, lunghezza_run[j], n, tempiLAN2);
 				
+				//SALVO ATTUALI GENERATORI
+				generatori = imp.getGeneratori();
 				
 				if (misure[2] >= 0) {
 					valori_throughput[(int)misure[2]] ++;
@@ -105,11 +111,18 @@ public class IAZI_Simulator {
 			System.out.println("estremo sup intervallo di confidenza al 95%  " + sup_intervallo_confidenza);
 			
 		}
+
+		double media_tempi_lan2 = 0.0;
 		
 		System.out.println("Tempi LAN2:");
 		for (int i = 0; i < tempiLAN2.size(); i ++) {
 			System.out.println(tempiLAN2.get(i));
+			media_tempi_lan2 += tempiLAN2.get(i);
 		}
+		
+		media_tempi_lan2 /= tempiLAN2.size();
+		
+		System.out.println("Media tempi lan2: " + media_tempi_lan2);
 		
 		System.out.println("Throughput LAN2");
 		for (int i = 0; i < valori_throughput.length; i ++) {
@@ -153,8 +166,8 @@ public class IAZI_Simulator {
 			if (start_window <= clock_value && clock_value <= end_window) {
 				//sono all'interno della finestra di osservazione
 				//conto i job di classe A che escono da LAN2
-				if (window_open && event.getClass().equals(FineLAN2.class)) {
-					if (event.getJob().getClass().equals("A")) {
+				if (window_open && event.getNomeEvento().equals(Evento.FINE_LAN2)) {
+					if (event.getJob().getClasse().equals("A")) {
 						ret[2] ++;
 					}
 				}
@@ -186,8 +199,7 @@ public class IAZI_Simulator {
 		return n;
 	}
 	
-	public int[] getLunghezzeRun(int p, long seme) {		
-		Generatore gen = new GeneratoreUniforme(seme);
+	public int[] getLunghezzeRun(int p, Generatore gen) {				
 		int[] lunghezza_run = new int[p];
 		
 		for (int j = 0; j < p; j ++) {

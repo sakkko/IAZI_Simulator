@@ -6,11 +6,15 @@ import IAZI_simulator.exception.CentroException;
 import IAZI_simulator.exception.EventoException;
 
 public class FineWAN extends Evento {
-
+   
 	public FineWAN(double tempo_fine_evento, int idCentro) {
 		super(Evento.FINE_WAN, tempo_fine_evento, idCentro);
 		// TODO Auto-generated constructor stub
 		
+	}
+	
+	public FineWAN(FineWAN fineWAN) {
+		super(fineWAN);
 	}
 
 	@Override

@@ -13,6 +13,10 @@ public class FineLAN2 extends Evento{
 		
 	}
 
+	public FineLAN2(FineLAN2 fineLAN2) {
+		super(fineLAN2);
+	}
+	
 	@Override
 	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException {
 		// TODO Auto-generated method stub
@@ -46,10 +50,6 @@ public class FineLAN2 extends Evento{
 				cal.aggiungiEvento(new FineGW2(cal.getClock().getTempo_di_simulazione() + next_time, idCentro));
 			}
 		}
-	}
-
-	public Job getJob() {
-		return job;
 	}
 	
 	public String toString() {

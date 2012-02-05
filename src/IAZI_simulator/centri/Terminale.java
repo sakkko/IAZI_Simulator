@@ -2,6 +2,7 @@ package IAZI_simulator.centri;
 
 import IAZI_simulator.IAZI_Simulator;
 import IAZI_simulator.entita.Job;
+import IAZI_simulator.exception.GeneratoreException;
 import IAZI_simulator.generatori.Generatore;
 import IAZI_simulator.generatori.GeneratoreEsponenziale;
 
@@ -17,6 +18,12 @@ public class Terminale extends Centro {
 		this.setId(cont);
 		cont = (cont + 1) % IAZI_Simulator.N;
 		this.gen_esp = new GeneratoreEsponenziale(seme, Terminale.TEMPO_MEDIO_SERVIZIO);
+	}
+	
+	public Terminale(Terminale term) throws GeneratoreException{
+		super(term);
+		this.id = term.id;
+		this.gen_esp = new GeneratoreEsponenziale(term.gen_esp);
 	}
 	
 	public double aggiungiJob(Job job){
@@ -35,5 +42,19 @@ public class Terminale extends Centro {
 	public long getNuovoSeme() {
 		return gen_esp.getProssimoSeme()[0];
 	}
+	
+	public void setGeneratore(Generatore generatore) throws GeneratoreException {
+		if (generatore.getClass().equals(GeneratoreEsponenziale.class)) {
+			this.gen_esp = generatore;
+		} else {
+			throw new GeneratoreException("TERM: tipo generatore non valido");
+		}
+	}
+
+	public Generatore getGeneratore() {
+		return gen_esp;
+	}
+	
+	
 
 }

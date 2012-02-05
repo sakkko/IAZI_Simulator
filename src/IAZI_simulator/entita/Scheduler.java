@@ -3,6 +3,7 @@ package IAZI_simulator.entita;
 import IAZI_simulator.eventi.Evento;
 import IAZI_simulator.exception.CentroException;
 import IAZI_simulator.exception.EventoException;
+import IAZI_simulator.exception.GeneratoreException;
 
 
 public class Scheduler {
@@ -10,6 +11,11 @@ public class Scheduler {
 	public Scheduler(Impianto impianto) {
 		this.impianto = impianto;
 		calendario = new Calendario();
+	}
+	
+	public Scheduler(Scheduler sched) throws GeneratoreException {
+		this.impianto = new Impianto(sched.impianto);
+		this.calendario = new Calendario(sched.calendario);
 	}
 	
 	public Calendario getCalendario() {

@@ -22,6 +22,15 @@ public class Job {
 		tempoFineLAN2b = 0;
 	}
 	
+	public Job(Job job) {
+		this.tempoInizioServizio = job.tempoInizioServizio;
+		this.id = job.id;
+		this.classe = job.classe;
+		this.nuovo = job.nuovo;
+		tempoFineLAN2a = job.tempoFineLAN2a;
+		tempoFineLAN2b = job.tempoFineLAN2b;
+	}
+	
 	public double getTempoInizioServizio() {
 		return tempoInizioServizio;
 	}

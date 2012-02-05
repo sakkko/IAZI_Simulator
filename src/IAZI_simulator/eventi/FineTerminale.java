@@ -14,6 +14,10 @@ public class FineTerminale extends Evento {
 		
 	}
 
+	public FineTerminale(FineTerminale fineTerminale) {
+		super(fineTerminale);
+	}
+	
 	@Override
 	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException {
 		// TODO Auto-generated method stub

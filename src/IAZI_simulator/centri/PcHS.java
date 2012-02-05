@@ -3,6 +3,7 @@ package IAZI_simulator.centri;
 import IAZI_simulator.code.Coda;
 import IAZI_simulator.code.FIFO;
 import IAZI_simulator.entita.Job;
+import IAZI_simulator.exception.GeneratoreException;
 import IAZI_simulator.generatori.Generatore;
 import IAZI_simulator.generatori.GeneratoreIperesp;
 
@@ -20,6 +21,13 @@ public class PcHS extends Centro {
 		cont = (cont + 1) % 3;
 		this.gen_iperesp = new GeneratoreIperesp(seme1, seme2, 0.6, PcHS.TEMPO_MEDIO_SERVIZIO);
 		this.FIFO = new FIFO();
+	}
+	
+	public PcHS(PcHS pchs) throws GeneratoreException{			
+		super(pchs);
+		this.id = pchs.id;
+		this.gen_iperesp = new GeneratoreIperesp(pchs.gen_iperesp);
+		this.FIFO = new FIFO((FIFO)pchs.FIFO);
 	}
 	
 	//aggiunge un job al centro se è libero, altrimenti lo mette in coda
@@ -57,6 +65,17 @@ public class PcHS extends Centro {
 		return gen_iperesp.getProssimoSeme();
 	}
 
+	public void setGeneratore(Generatore generatore) throws GeneratoreException {
+		if (generatore.getClass().equals(GeneratoreIperesp.class)) {
+			this.gen_iperesp = generatore;
+		} else {
+			throw new GeneratoreException("PCHS: tipo generatore non valido");
+		}
+	}
+
+	public Generatore getGeneratore() {
+		return gen_iperesp;
+	}
 	
 
 }

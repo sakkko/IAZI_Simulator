@@ -9,6 +9,13 @@ public class LIFO extends Coda {
 		super();
 	}
 	
+	public LIFO(LIFO lifo){		
+		super();
+		for (int i = 0; i < lifo.coda.size(); i ++) {
+			this.coda.add(lifo.coda.get(i));
+		}
+	}
+	
 	public void inserisciJob(Job job){ //inserimento in coda
 		
 		this.coda.add(job); 

@@ -2,7 +2,7 @@ package IAZI_simulator.entita;
 
 import java.util.ArrayList;
 
-import IAZI_simulator.eventi.Evento;
+import IAZI_simulator.eventi.*;
 import IAZI_simulator.exception.EventoException;
 
 /* La classe Calendario è implementata come un ArrayList di Eventi. Per ogni tipo di evento
@@ -18,6 +18,32 @@ public class Calendario {
 	public Calendario(){
 		calendario = new ArrayList<Evento>();
 		clock = new Clock();
+	}
+	
+	public Calendario(Calendario calendario) {
+		this.calendario = new ArrayList<Evento>();
+		for (int i = 0; i < calendario.calendario.size(); i ++) {
+			if (calendario.calendario.get(i).getClass().equals(FineDisk.class)) {
+				this.calendario.add(new FineDisk((FineDisk)calendario.calendario.get(i)));
+			} else if (calendario.calendario.get(i).getClass().equals(FineGW1.class)) {
+				this.calendario.add(new FineGW1((FineGW1)calendario.calendario.get(i)));
+			} else if (calendario.calendario.get(i).getClass().equals(FineGW2.class)) {
+				this.calendario.add(new FineGW2((FineGW2)calendario.calendario.get(i)));
+			} else if (calendario.calendario.get(i).getClass().equals(FineLAN1.class)) {
+				this.calendario.add(new FineLAN1((FineLAN1)calendario.calendario.get(i)));
+			} else if (calendario.calendario.get(i).getClass().equals(FineLAN2.class)) {
+				this.calendario.add(new FineLAN2((FineLAN2)calendario.calendario.get(i)));
+			} else if (calendario.calendario.get(i).getClass().equals(FinePcHC.class)) {
+				this.calendario.add(new FinePcHC((FinePcHC)calendario.calendario.get(i)));
+			} else if (calendario.calendario.get(i).getClass().equals(FinePcHS.class)) {
+				this.calendario.add(new FinePcHS((FinePcHS)calendario.calendario.get(i)));
+			} else if (calendario.calendario.get(i).getClass().equals(FineTerminale.class)) {
+				this.calendario.add(new FineTerminale((FineTerminale)calendario.calendario.get(i)));
+			} else if (calendario.calendario.get(i).getClass().equals(FineWAN.class)) {
+				this.calendario.add(new FineWAN((FineWAN)calendario.calendario.get(i)));
+			} 			
+		}
+		this.clock = new Clock(calendario.clock);
 	}
 	
 	public void aggiungiEvento(Evento evento) throws EventoException{		

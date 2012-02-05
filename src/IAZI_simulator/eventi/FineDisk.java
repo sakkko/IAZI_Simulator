@@ -11,6 +11,10 @@ public class FineDisk extends Evento {
 		super(Evento.FINE_DISK, tempo_fine_evento, idCentro);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public FineDisk(FineDisk fineDisk) {
+		super(fineDisk);
+	}
 
 	@Override
 	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException {
