@@ -86,6 +86,7 @@ public class GeneratoreUniforme extends Generatore {
 	long moltiplicatore;
 	long current;
 	long semeIniziale;
+
 }
 
 

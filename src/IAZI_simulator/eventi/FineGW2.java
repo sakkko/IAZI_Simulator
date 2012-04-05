@@ -10,8 +10,11 @@ public class FineGW2 extends Evento {
 
 	public FineGW2(double tempo_fine_evento, int idCentro) {
 		super(Evento.FINE_GW2, tempo_fine_evento, idCentro);
-		// TODO Auto-generated constructor stub
-		
+		// TODO Auto-generated constructor stub		
+	}
+	
+	public FineGW2(FineGW2 fineGW2) {
+		super(fineGW2);
 	}
 
 	@Override

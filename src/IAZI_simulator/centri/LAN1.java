@@ -66,5 +66,5 @@ public class LAN1 extends Centro {
 		this.gen_iperespB = new GeneratoreIperesp(semi[2], semi[3], 0.3, LAN1.TEMPO_MEDIO_SERVIZIO_B, semiIniziali[2], semiIniziali[3]);
 	}
 	
-	
+
 }	

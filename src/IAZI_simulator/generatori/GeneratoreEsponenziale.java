@@ -3,7 +3,7 @@ package IAZI_simulator.generatori;
 import IAZI_simulator.exception.GeneratoreException;
 
 public class GeneratoreEsponenziale extends Generatore {
-	
+
 	public GeneratoreEsponenziale(long seme, long modulo, long moltiplicatore, double Ta){		
 		super();
 		this.genUniforme = new GeneratoreUniforme(seme, modulo, moltiplicatore);
@@ -47,5 +47,5 @@ public class GeneratoreEsponenziale extends Generatore {
 	
 	private GeneratoreUniforme genUniforme;
 	private double Ta;
-	
+		
 }

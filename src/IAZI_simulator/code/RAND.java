@@ -1,10 +1,11 @@
 package IAZI_simulator.code;
+
 import IAZI_simulator.entita.Job;
 import IAZI_simulator.exception.GeneratoreException;
 import IAZI_simulator.generatori.GeneratoreUniforme;
 
 public class RAND extends Coda{
-	
+
 	private GeneratoreUniforme generatore_uniforme;
 	
 	public RAND(long seme, long semeIniziale){
@@ -37,5 +38,6 @@ public class RAND extends Coda{
 	public void setNuovoSeme(long seme, long semeIniziale) {
 		this.generatore_uniforme = new GeneratoreUniforme(seme, semeIniziale);
 	}
+	
 	
 }

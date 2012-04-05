@@ -15,8 +15,11 @@ public class FineLAN1 extends Evento {
 	
 	public FineLAN1(double tempo_fine_evento, int idCentro) {
 		super(Evento.FINE_LAN1, tempo_fine_evento, idCentro);
-		// TODO Auto-generated constructor stub
-		
+		// TODO Auto-generated constructor stub		
+	}
+	
+	public FineLAN1(FineLAN1 fineLAN1) {
+		super(fineLAN1);
 	}
 
 	@Override

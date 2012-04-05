@@ -46,6 +46,17 @@ public abstract class Evento {
 		this.idCentro = idCentro;
 	}
 	
+	public Evento(Evento evento) {
+		this.nomeEvento = evento.nomeEvento;
+		this.tempo_fine_evento = evento.tempo_fine_evento;
+		this.idCentro = evento.idCentro;
+		if (evento.job != null) {
+			this.job = new Job(evento.job);
+		} else {
+			this.job = null;
+		}
+	}
+	
 	public String getNomeEvento() {
 		return nomeEvento;
 	}

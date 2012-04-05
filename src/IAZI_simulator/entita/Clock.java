@@ -9,6 +9,10 @@ public class Clock {
 		this.tempo_di_simulazione = 0.0;
 	}
 	
+	public Clock(Clock clock) {
+		this.tempo_di_simulazione = clock.tempo_di_simulazione;
+	}
+	
 	public void incrementa(double deltaT){
 		
 		this.tempo_di_simulazione += deltaT;

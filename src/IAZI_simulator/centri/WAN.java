@@ -58,4 +58,5 @@ public class WAN extends Centro {
 		this.gen_4erlang = new GeneratoreKerl(seme, 4, WAN.TEMPO_MEDIO_SERVIZIO, semiIniziali);
 	}
 
+
 }

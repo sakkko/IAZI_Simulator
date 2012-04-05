@@ -44,7 +44,6 @@ public class PcHC extends Centro {
 	public void setNuovoSeme(long seme1, long seme2, long seme1Iniziale, long seme2Iniziale) {
 		gen_iperesp = new GeneratoreIperesp(seme1, seme2, 0.6, PcHC.TEMPO_MEDIO_SERVIZIO, seme1Iniziale, seme2Iniziale);
 	}
-	
-	
+		
 
 }

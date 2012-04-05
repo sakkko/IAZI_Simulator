@@ -11,6 +11,13 @@ public class FIFO extends Coda {
 		super();
 	}
 	
+	public FIFO(FIFO fifo){		
+		super();
+		for (int i = 0; i < fifo.coda.size(); i ++) {
+			this.coda.add(fifo.coda.get(i));
+		}
+	}
+	
 	public void inserisciJob(Job job){ //inserimento in coda
 		
 		this.coda.add(job); 

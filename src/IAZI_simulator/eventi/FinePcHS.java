@@ -11,7 +11,10 @@ public class FinePcHS extends Evento {
 	public FinePcHS(double tempo_fine_evento, int idCentro) {
 		super(Evento.FINE_PCHS, tempo_fine_evento, idCentro);
 		// TODO Auto-generated constructor stub
-		
+	}
+	
+	public FinePcHS(FinePcHS finePcHS) {
+		super(finePcHS);
 	}
 
 	@Override

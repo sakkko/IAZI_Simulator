@@ -48,5 +48,5 @@ public class Terminale extends Centro {
 		return "Terminale [id=" + id + ", seme_gen=" + gen_esp.getGeneratore().getSeme() + "]";
 	}
 
-	
+
 }
