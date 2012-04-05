@@ -5,12 +5,14 @@ import java.util.ArrayList;
 import IAZI_simulator.eventi.Evento;
 import IAZI_simulator.exception.EventoException;
 
+
+
 /* La classe Calendario è implementata come un ArrayList di Eventi. Per ogni tipo di evento
  * il calendario salva il nome e il tempo successivo in cui l'evento avrà luogo. 
  * Viene mantenuta la lista ordinata in modo che il primo elemento della lista sarà sempre
  * quello con tempo minore di tutti e che sarà quidni selezionato dallo scheduler
  */
-public class Calendario {
+public class Calendario  {
 	
 	ArrayList<Evento> calendario;
 	Clock clock;

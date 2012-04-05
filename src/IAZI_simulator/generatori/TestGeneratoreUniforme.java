@@ -1,8 +1,10 @@
 package IAZI_simulator.generatori;
 
+import IAZI_simulator.exception.GeneratoreException;
+
 public class TestGeneratoreUniforme {
 	
-	public static boolean ChiQuadroTest(Generatore gen) {
+	public static boolean ChiQuadroTest(Generatore gen) throws GeneratoreException {
 		int nrun = 10000;
 		int numeroClassi = 20;
 		int[] classi = new int[numeroClassi];

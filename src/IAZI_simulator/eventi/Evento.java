@@ -1,10 +1,13 @@
 package IAZI_simulator.eventi;
 
+
 import IAZI_simulator.entita.Calendario;
 import IAZI_simulator.entita.Impianto;
 import IAZI_simulator.entita.Job;
 import IAZI_simulator.exception.CentroException;
 import IAZI_simulator.exception.EventoException;
+import IAZI_simulator.exception.GeneratoreException;
+
 
 /* Gli eventi che vanno presi in considerazione sono:
  * 
@@ -35,7 +38,7 @@ public abstract class Evento {
 	protected Job job;
 	
 	
-	public abstract void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException;
+	public abstract void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException, GeneratoreException;
 	
 	public Evento(String nomeEvento, double tempo_fine_evento, int idCentro) {		
 		this.nomeEvento = nomeEvento;

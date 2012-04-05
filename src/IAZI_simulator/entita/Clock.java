@@ -1,9 +1,8 @@
 package IAZI_simulator.entita;
 
 public class Clock {
-
-	private double tempo_di_simulazione;
 	
+	private double tempo_di_simulazione;
 	
 	public Clock(){
 		

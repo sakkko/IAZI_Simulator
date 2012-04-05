@@ -1,5 +1,8 @@
 package IAZI_simulator.generatori;
 
+import IAZI_simulator.exception.GeneratoreException;
+
+
 public abstract class Generatore {
 	
 	public double getMedia() {
@@ -18,9 +21,13 @@ public abstract class Generatore {
 		this.varianza = varianza;
 	}
 	
-	public abstract double getNext();
+	public double getTa() {
+		return 0;
+	}
 	
-	public abstract long[] getProssimoSeme();
+	public abstract double getNext() throws GeneratoreException;
+	
+	public abstract long[] getProssimoSeme() throws GeneratoreException;
 
 
 	double media;

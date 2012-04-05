@@ -5,9 +5,10 @@ import IAZI_simulator.entita.Calendario;
 import IAZI_simulator.entita.Impianto;
 import IAZI_simulator.exception.CentroException;
 import IAZI_simulator.exception.EventoException;
+import IAZI_simulator.exception.GeneratoreException;
 
 public class FineLAN1 extends Evento {
-
+	
 	//usati per calcolare il tempo medio di risposta visto dai T
 	private static int jobTerminati = 0;
 	private static double tempoRispostaJob = 0.0;
@@ -19,7 +20,7 @@ public class FineLAN1 extends Evento {
 	}
 
 	@Override
-	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException {
+	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException, GeneratoreException {
 		// TODO Auto-generated method stub
 		LAN1 lan1 = imp.getLan1().get(idCentro);
 		job = lan1.rimuoviJob();

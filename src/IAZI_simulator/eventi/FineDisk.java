@@ -4,8 +4,10 @@ import IAZI_simulator.centri.*;
 import IAZI_simulator.entita.*;
 import IAZI_simulator.exception.CentroException;
 import IAZI_simulator.exception.EventoException;
+import IAZI_simulator.exception.GeneratoreException;
 
 public class FineDisk extends Evento {
+	
 
 	public FineDisk(double tempo_fine_evento, int idCentro) {
 		super(Evento.FINE_DISK, tempo_fine_evento, idCentro);
@@ -13,7 +15,7 @@ public class FineDisk extends Evento {
 	}
 
 	@Override
-	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException {
+	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException, GeneratoreException {
 		// TODO Auto-generated method stub
 		Disk disk = imp.getServerDisk().get(idCentro);
 		job = disk.rimuoviJob();

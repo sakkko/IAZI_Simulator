@@ -1,6 +1,7 @@
 package IAZI_simulator.centri;
 
 import IAZI_simulator.entita.Job;
+import IAZI_simulator.exception.GeneratoreException;
 
 /* Per ogni centro specifico andrà poi creato come attributo un identificativo unico,
  * un rispettivo generatore per la generazione dei tempi di servizio, e un rispettivo oggetto
@@ -45,7 +46,7 @@ public abstract class Centro {
 	}
 
 	//aggiunge un job al centro se è libero, altrimenti lo mette in coda(dove prevista)
-	public abstract double aggiungiJob(Job job);
+	public abstract double aggiungiJob(Job job) throws GeneratoreException;
 	
 	
 }

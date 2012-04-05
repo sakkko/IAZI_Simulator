@@ -7,6 +7,7 @@ import IAZI_simulator.eventi.FineLAN1;
 import IAZI_simulator.exception.GeneratoreException;
 import IAZI_simulator.generatori.*;
 
+
 public class Impianto { 
 	
 	public Impianto(long[] semi, int nClient, int nServer) throws GeneratoreException {
@@ -17,23 +18,31 @@ public class Impianto {
 		
 		terminali = new ArrayList<Terminale>(nClient);
 		for (i = 0; i < nClient; i ++) {
-			terminali.add(new Terminale(semi[i]));
+			terminali.add(new Terminale(semi[i], semi[i], nClient));
 		}
 		
 		clientPC = new ArrayList<PcHC>(nClient);
 		for (int k = 0; k < nClient; k ++) {
-			clientPC.add(new PcHC(semi[i], semi[i + 1]));
+			clientPC.add(new PcHC(semi[i], semi[i + 1], semi[i], semi[i + 1], nClient));
 			i += 2;
 		}		
 		
 		lan1 = new ArrayList<LAN1>();
+		long[] tmp_semi = new long[4];
 		for (int k = 0; k < nClient; k ++) {
-			lan1.add(new LAN1(semi[i], semi[i + 1]));
-			i += 2;
+			tmp_semi[0] = semi[i];
+			i ++;
+			tmp_semi[1] = semi[i];
+			i ++;
+			tmp_semi[2] = semi[i];
+			i ++;
+			tmp_semi[3] = semi[i];
+			i ++;
+			lan1.add(new LAN1(tmp_semi, tmp_semi, nClient));
 		}
 		FineLAN1.setJobTerminati(0);
 		
-		gw1 = new GW1(semi[i], semi[i + 1]);
+		gw1 = new GW1(semi[i], semi[i + 1], semi[i], semi[i + 1]);
 		i += 2;
 		
 		wan = new ArrayList<WAN>();
@@ -43,7 +52,7 @@ public class Impianto {
 				tmpSemi[j] = semi[i];
 				i ++;
 			}
-			wan.add(new WAN(tmpSemi));
+			wan.add(new WAN(tmpSemi, tmpSemi, nClient));
 		}
 				
 		tmpSemi = new long[6];
@@ -51,18 +60,22 @@ public class Impianto {
 			tmpSemi[j] = semi[i];
 			i ++;
 		}
-		gw2 = new GW2(tmpSemi);
+		gw2 = new GW2(tmpSemi, tmpSemi);
 		
 		lan2 = new ArrayList<LAN2>();
+		tmp_semi = new long[2];
 		for (int j = 0; j < nClient; j ++) {
-			lan2.add(new LAN2(semi[i]));
+			tmp_semi[0] = semi[i];
 			i ++;
+			tmp_semi[1] = semi[i];
+			i ++;
+			lan2.add(new LAN2(tmp_semi, tmp_semi, nClient));
 		}
 		
 		
 		serverPC = new ArrayList<PcHS>(nServer);
 		for (int j = 0; j < nServer; j ++) {
-			serverPC.add(new PcHS(semi[i], semi[i + 1]));
+			serverPC.add(new PcHS(semi[i], semi[i + 1], semi[i], semi[i + 1]));
 			i += 2;
 		}
 		 
@@ -73,15 +86,88 @@ public class Impianto {
 				tmpSemi[j] = semi[i];
 				i ++;
 			}
-			serverDisk.add(new Disk(tmpSemi, semi[i]));
+			serverDisk.add(new Disk(tmpSemi, semi[i], tmpSemi, semi[i]));
 			i ++;
 		}
 			
-		gen = new GeneratoreUniforme(semi[i]);
-	
+		gen = new GeneratoreUniforme(semi[i], semi[i]);		
+		
 	}
 	
-	public long[] getNuoviSemi(int size) {
+	public void setNuoviSemi(long[] semi, long[] semiIniziali) throws GeneratoreException {
+		int n = 0;
+		
+		for (int i = 0; i < nClient; i ++) {
+			terminali.get(i).setNuovoSeme(semi[n], semiIniziali[n]);
+			n ++;
+		}
+		
+		for (int i = 0; i < nClient; i ++) {
+			clientPC.get(i).setNuovoSeme(semi[n], semi[n + 1], semiIniziali[n], semiIniziali[n + 1]);
+			n += 2;
+		}
+		
+		long[] tmp_semi = new long[4];
+		long[] tmp_semi_iniziali = new long[4];
+		for (int i = 0; i < nClient; i ++) {
+			tmp_semi[0] = semi[n];
+			tmp_semi_iniziali[0] = semiIniziali[n];
+			n ++;
+			tmp_semi[1] = semi[n];
+			tmp_semi_iniziali[1] = semiIniziali[n];
+			n ++;
+			tmp_semi[2] = semi[n];
+			tmp_semi_iniziali[2] = semiIniziali[n];
+			n ++;
+			tmp_semi[3] = semi[n];
+			tmp_semi_iniziali[3] = semiIniziali[n];
+			n ++;
+ 			lan1.get(i).setNuovoSeme(tmp_semi, tmp_semi_iniziali);
+		}
+		
+		gw1.setNuovoSeme(semi[n], semi[n + 1], semiIniziali[n], semiIniziali[n + 1]);
+		n += 2;
+		
+		for (int i = 0; i < nClient; i ++) {
+			wan.get(i).setNuovoSeme(semi[n], semi[n + 1], semi[n + 2], semi[n + 3],
+					semiIniziali[n], semiIniziali[n + 1], semiIniziali[n + 2], semiIniziali[n + 3]);
+			n += 4;
+		}
+		
+		gw2.setNuovoSeme(semi[n], semi[n + 1], semi[n + 2], semi[n + 3], semi[n + 4], semi[n + 5],
+				semiIniziali[n], semiIniziali[n + 1], semiIniziali[n + 2], semiIniziali[n + 3], semiIniziali[n + 4], semiIniziali[n + 5]);
+		n += 6;
+		
+		tmp_semi = new long[2];
+		tmp_semi_iniziali = new long[2];
+		for (int i = 0; i < nClient; i ++) {
+			tmp_semi[0] = semi[n];
+			tmp_semi_iniziali[0] = semiIniziali[n];
+			n ++;
+			tmp_semi[1] = semi[n];
+			tmp_semi_iniziali[1] = semiIniziali[n];
+			n ++;
+			lan2.get(i).setNuovoSeme(tmp_semi, tmp_semi_iniziali);
+		}
+		
+		for (int i = 0; i < nServer; i ++) {
+			serverPC.get(i).setNuovoSeme(semi[n], semi[n + 1], semiIniziali[n], semiIniziali[n + 1]);
+			n += 2;
+		}
+		
+		for (int i = 0; i < nServer; i ++) {
+			serverDisk.get(i).setNuovoSeme(semi[n], semi[n + 1], semi[n + 2], semi[n + 3], semi[n + 4],
+					semiIniziali[n], semiIniziali[n + 1], semiIniziali[n + 2], semiIniziali[n + 3], semiIniziali[n + 4]);
+			n += 5;
+			serverDisk.get(i).setNuovoSemeCoda(semi[n], semiIniziali[n]);
+			n ++;
+		}
+		
+		gen = new GeneratoreUniforme(semi[n], semiIniziali[n]);
+		
+	}
+	
+	public long[] getNuoviSemi(int size) throws GeneratoreException {
 		long[] ret = new long[size];
 		long[] tmp_semi;
 		
@@ -128,8 +214,12 @@ public class Impianto {
 		}	
 		
 		for (LAN2 ln2 : lan2) {
-			ret[i] = ln2.getNuovoSeme();
-			i ++;
+			tmp_semi = ln2.getNuovoSeme();
+			for (int j = 0; j < tmp_semi.length; j ++) {
+				ret[i] = tmp_semi[j];
+				i ++;
+			}
+			
 		}
 		
 		for (PcHS spc : serverPC) {
@@ -193,7 +283,7 @@ public class Impianto {
 		return serverDisk;
 	}
 
-	public double getProbabilitaDiramazione() {
+	public double getProbabilitaDiramazione() throws GeneratoreException {
 		return gen.getNext();
 	}
 

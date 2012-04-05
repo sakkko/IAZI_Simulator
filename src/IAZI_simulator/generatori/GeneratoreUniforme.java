@@ -1,5 +1,7 @@
 package IAZI_simulator.generatori;
 
+import IAZI_simulator.exception.GeneratoreException;
+
 public class GeneratoreUniforme extends Generatore {
 	
 	public GeneratoreUniforme(long seme, long modulo, long moltiplicatore) {
@@ -11,15 +13,16 @@ public class GeneratoreUniforme extends Generatore {
 		this.nGenerati = 0;
 	}
 	
-	public GeneratoreUniforme(long seme) {
+	public GeneratoreUniforme(long seme, long semeIniziale) {
 		super();
 		this.seme = seme;
 		this.modulo = 2147483648L;
 		this.moltiplicatore = 1220703125L;
 		this.current = seme;
+		this.nGenerati = 0;
 	}
 	
-	public double getNext() //valore compreso tra 0 e 1
+	public double getNext() throws GeneratoreException //valore compreso tra 0 e 1
 	{
 		return (double)getLong()/(double)modulo;
 	}
@@ -48,20 +51,33 @@ public class GeneratoreUniforme extends Generatore {
 		this.moltiplicatore = moltiplicatore;
 	}
 	
-	private long getLong(){		
+	private long getLong() throws GeneratoreException{		
 		if (nGenerati == 0) {
 			nGenerati ++;
 			return seme;
 		} else {
 			current = (moltiplicatore * current) % modulo;
+			if (current == semeIniziale) {
+				throw new GeneratoreException("Completato il periodo del generatore");
+			}
 			return current;
 		}
 	}
 	
-	public long[] getProssimoSeme() {
+	public long[] getProssimoSeme() throws GeneratoreException {
 		long[] ret = new long[1];
-		ret[0] = current;
+		ret[0] = getLong();
 		return ret;
+	}
+	
+	@Override
+	public double getMedia() {
+		return 0.5;
+	}
+	
+	@Override
+	public double getVarianza() {
+		return 0.083333;
 	}
 
 	int nGenerati;
@@ -69,7 +85,7 @@ public class GeneratoreUniforme extends Generatore {
 	long modulo;
 	long moltiplicatore;
 	long current;
-	long prossimaBase;
+	long semeIniziale;
 }
 
 

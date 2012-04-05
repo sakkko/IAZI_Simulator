@@ -1,20 +1,20 @@
 package IAZI_simulator.eventi;
 
+import IAZI_simulator.centri.*;
 import IAZI_simulator.entita.*;
 import IAZI_simulator.exception.CentroException;
 import IAZI_simulator.exception.EventoException;
-import IAZI_simulator.centri.*;
+import IAZI_simulator.exception.GeneratoreException;
 
 public class FinePcHC extends Evento {
 
-	
 	public FinePcHC(double tempo_fine_evento, int idCentro) {
 		super(Evento.FINE_PCHC, tempo_fine_evento, idCentro);
 		// TODO Auto-generated constructor stub		
 	}
 
 	@Override
-	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException {
+	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException, GeneratoreException {
 		// TODO Auto-generated method stub
 		PcHC pchc = imp.getClientPC().get(idCentro);
 		job = pchc.rimuoviJob();

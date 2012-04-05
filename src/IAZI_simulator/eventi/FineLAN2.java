@@ -4,9 +4,10 @@ import IAZI_simulator.centri.*;
 import IAZI_simulator.entita.*;
 import IAZI_simulator.exception.CentroException;
 import IAZI_simulator.exception.EventoException;
+import IAZI_simulator.exception.GeneratoreException;
 
 public class FineLAN2 extends Evento{
-	
+
 	public FineLAN2(double tempo_fine_evento, int idCentro) {
 		super(Evento.FINE_LAN2, tempo_fine_evento, idCentro);
 		// TODO Auto-generated constructor stub
@@ -14,7 +15,7 @@ public class FineLAN2 extends Evento{
 	}
 
 	@Override
-	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException {
+	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException, GeneratoreException {
 		// TODO Auto-generated method stub
 		LAN2 lan2 = imp.getLan2().get(idCentro);
 		job = lan2.rimuoviJob();

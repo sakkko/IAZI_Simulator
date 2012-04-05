@@ -5,6 +5,7 @@ import IAZI_simulator.entita.Calendario;
 import IAZI_simulator.entita.Impianto;
 import IAZI_simulator.exception.CentroException;
 import IAZI_simulator.exception.EventoException;
+import IAZI_simulator.exception.GeneratoreException;
 
 public class FineTerminale extends Evento {
 
@@ -15,7 +16,7 @@ public class FineTerminale extends Evento {
 	}
 
 	@Override
-	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException {
+	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException, GeneratoreException {
 		// TODO Auto-generated method stub
 		Terminale term = imp.getTerminali().get(idCentro);
 		job = term.rimuoviJob();

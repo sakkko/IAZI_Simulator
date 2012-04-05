@@ -1,17 +1,18 @@
 package IAZI_simulator.generatori;
 
+import IAZI_simulator.exception.GeneratoreException;
+
 public class GeneratoreIperesp extends Generatore {
 	
-	
-	public GeneratoreIperesp(long seme1, long seme2, double probabilità, double Ta){
+	public GeneratoreIperesp(long seme1, long seme2, double probabilita, double Ta, long seme1Iniziale, long seme2Iniziale){
 		super();
 		this.Ta = Ta;
-		this.p = probabilità;
-		this.genUniforme = new GeneratoreUniforme(seme1);
-		this.genEsponenziale = new GeneratoreEsponenziale(seme2,1); // variabile esponenziale con media 1
+		this.p = probabilita;
+		this.genUniforme = new GeneratoreUniforme(seme1, seme1Iniziale);
+		this.genEsponenziale = new GeneratoreEsponenziale(seme2,1, seme2Iniziale); // variabile esponenziale con media 1
 	}
 	
-	public double getNext(){		
+	public double getNext() throws GeneratoreException{		
 		double r = genUniforme.getNext();
 		double X = genEsponenziale.getNext();
 		
@@ -29,6 +30,17 @@ public class GeneratoreIperesp extends Generatore {
 		return p;
 	}
 
+	@Override
+	public double getMedia() {
+		return Ta;
+	}
+
+	@Override
+	public double getVarianza() {
+		double alpha = (1 / (2 * p * (1 - p))) - 1;
+		return alpha * Math.pow(Ta, 2);
+	}
+	
 	public GeneratoreUniforme getGenUniforme() {
 		return genUniforme;
 	}
@@ -37,11 +49,19 @@ public class GeneratoreIperesp extends Generatore {
 		return genEsponenziale;
 	}
 	
-	public long[] getProssimoSeme() {
+	public long[] getProssimoSeme() throws GeneratoreException {
 		long[] ret = new long[2];
 		ret[0] = genUniforme.getProssimoSeme()[0];
 		ret[1] = genEsponenziale.getProssimoSeme()[0];
 		return ret;
+	}
+	
+	public long getSeme1() {
+		return genUniforme.getSeme();
+	}
+	
+	public long getSeme2() {
+		return genEsponenziale.getGeneratore().getSeme();
 	}
 
 	private double Ta;

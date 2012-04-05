@@ -4,6 +4,7 @@ import IAZI_simulator.centri.*;
 import IAZI_simulator.entita.*;
 import IAZI_simulator.exception.CentroException;
 import IAZI_simulator.exception.EventoException;
+import IAZI_simulator.exception.GeneratoreException;
 
 public class FineGW2 extends Evento {
 
@@ -14,7 +15,7 @@ public class FineGW2 extends Evento {
 	}
 
 	@Override
-	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException {
+	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException, GeneratoreException {
 		// TODO Auto-generated method stub
 		GW2 gw2 = imp.getGw2();
 		job = gw2.rimuoviJob();

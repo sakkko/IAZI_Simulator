@@ -5,8 +5,10 @@ import IAZI_simulator.entita.Calendario;
 import IAZI_simulator.entita.Impianto;
 import IAZI_simulator.exception.CentroException;
 import IAZI_simulator.exception.EventoException;
+import IAZI_simulator.exception.GeneratoreException;
 
 public class FineGW1 extends Evento {
+	
 
 	public FineGW1(double tempo_fine_evento, int idCentro) {
 		super(Evento.FINE_GW1, tempo_fine_evento, idCentro);
@@ -15,7 +17,7 @@ public class FineGW1 extends Evento {
 	}
 
 	@Override
-	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException {
+	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException, GeneratoreException {
 		// TODO Auto-generated method stub
 		GW1 gw1 = imp.getGw1();
 		job = gw1.rimuoviJob();

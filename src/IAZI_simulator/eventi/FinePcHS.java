@@ -4,6 +4,7 @@ import IAZI_simulator.centri.*;
 import IAZI_simulator.entita.*;
 import IAZI_simulator.exception.CentroException;
 import IAZI_simulator.exception.EventoException;
+import IAZI_simulator.exception.GeneratoreException;
 
 public class FinePcHS extends Evento {
 
@@ -14,7 +15,7 @@ public class FinePcHS extends Evento {
 	}
 
 	@Override
-	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException {
+	public void routineFineEvento(Calendario cal, Impianto imp) throws CentroException, EventoException, GeneratoreException {
 		// TODO Auto-generated method stub
 		PcHS pchs = imp.getServerPC().get(idCentro);
 		job = pchs.rimuoviJob();
@@ -26,8 +27,9 @@ public class FinePcHS extends Evento {
 		}
 		
 		prob = imp.getProbabilitaDiramazione();
-		//prob di diramazione, 1/195 vado verso LAN2, 194/195 torno al disk
-		if (prob < 1.0/195.0) {
+		
+		if (prob < 1.0/51.0) { //Client:12
+		//if (prob < 1.0/195.0) { // Client:48
 			job.setClasse("B");
 			next_time = imp.getLan2().get(job.getId()).aggiungiJob(job);
 			cal.aggiungiEvento(new FineLAN2(cal.getClock().getTempo_di_simulazione() + next_time, job.getId()));

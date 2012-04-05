@@ -9,23 +9,23 @@ import IAZI_simulator.generatori.GeneratoreKerl;
 
 public class GW2 extends Centro {
 
-	//non uso un id per il centro GW perchè sarà un centro unico per l'impianto, dotato di uan coda
-	//che gestisce l'arrivo di piu carichi contemporaneamente
-	private static final double TEMPO_MEDIO_SERVIZIO = 0.0005;//secondi
+	public static final double TEMPO_MEDIO_SERVIZIO = 0.0005;//secondi
+	public static final int K = 6;
+	
 	private Generatore gen_6erlang;
 	private Coda LIFO;
 	
-	public GW2(long[] semi) throws GeneratoreException {			
-		if (semi.length != 6) {
+	public GW2(long[] semi, long[] semiIniziali) throws GeneratoreException {			
+		if (semi.length != K) {
 			throw new GeneratoreException("GW2: numero di semi non valido");
 		}
 		
-		this.gen_6erlang = new GeneratoreKerl(semi, semi.length, GW2.TEMPO_MEDIO_SERVIZIO);
+		this.gen_6erlang = new GeneratoreKerl(semi, semi.length, GW2.TEMPO_MEDIO_SERVIZIO, semiIniziali);
 		this.LIFO = new LIFO();
 	}
 	
 	//aggiunge un job al centro se è libero, altrimenti lo mette in coda
-	public double aggiungiJob(Job job){
+	public double aggiungiJob(Job job) throws GeneratoreException{
 		
 		if (this.isOccupato()){
 			this.LIFO.inserisciJob(job);
@@ -38,7 +38,7 @@ public class GW2 extends Centro {
 	}
 
 
-	public Job prelevaJob(){		
+	public Job prelevaJob() throws GeneratoreException{		
 		if (!this.LIFO.codaVuota()) {
 			return this.LIFO.prelevaJob();
 		} else {
@@ -46,9 +46,27 @@ public class GW2 extends Centro {
 		}
 	}
 	
-	public long[] getNuovoSeme() {
+	public long[] getNuovoSeme() throws GeneratoreException {
 		return gen_6erlang.getProssimoSeme();
 	}
 	
+	public void setNuovoSeme(long seme1, long seme2, long seme3, long seme4, long seme5, long seme6,
+			long seme1Iniziale, long seme2Iniziale, long seme3Iniziale, long seme4Iniziale, long seme5Iniziale, long seme6Iniziale) {
+		long semi[] = new long[6];
+		long semiIniziali[] = new long[6];
+		semi[0] = seme1;
+		semi[1] = seme2;
+		semi[2] = seme3;
+		semi[3] = seme4;
+		semi[4] = seme5;
+		semi[5] = seme6;
+		semiIniziali[0] = seme1Iniziale;
+		semiIniziali[1] = seme2Iniziale;
+		semiIniziali[2] = seme3Iniziale;
+		semiIniziali[3] = seme4Iniziale;
+		semiIniziali[4] = seme5Iniziale;
+		semiIniziali[5] = seme6Iniziale;
+		this.gen_6erlang = new GeneratoreKerl(semi, semi.length, GW2.TEMPO_MEDIO_SERVIZIO, semiIniziali);
+	}
 
 }
