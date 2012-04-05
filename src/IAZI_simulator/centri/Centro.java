@@ -2,7 +2,6 @@ package IAZI_simulator.centri;
 
 import IAZI_simulator.entita.Job;
 import IAZI_simulator.exception.GeneratoreException;
-import IAZI_simulator.generatori.Generatore;
 
 /* Per ogni centro specifico andrà poi creato come attributo un identificativo unico,
  * un rispettivo generatore per la generazione dei tempi di servizio, e un rispettivo oggetto

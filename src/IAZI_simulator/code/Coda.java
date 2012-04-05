@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import IAZI_simulator.entita.Job;
 import IAZI_simulator.exception.GeneratoreException;
 
+
+
 public abstract class Coda {
 	
 	protected ArrayList<Job> coda;

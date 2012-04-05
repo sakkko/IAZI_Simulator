@@ -8,6 +8,8 @@ import IAZI_simulator.exception.GeneratoreException;
 import IAZI_simulator.generatori.*;
 
 
+
+
 public class Impianto { 
 	
 	public Impianto(long[] semi, int nClient, int nServer) throws GeneratoreException {

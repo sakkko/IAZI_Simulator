@@ -1,6 +1,5 @@
 package IAZI_simulator;
 
-
 import java.util.*;
 import java.io.*;
 
@@ -8,7 +7,6 @@ import IAZI_simulator.entita.*;
 import IAZI_simulator.eventi.*;
 import IAZI_simulator.exception.*;
 import IAZI_simulator.generatori.*;
-
 
 
 public class IAZI_Simulator {
@@ -24,6 +22,16 @@ public class IAZI_Simulator {
 	public final static int ONLY_STAT = 1;
 	public final static int ONLY_STAB = 2;
 	public final static int TEST_GEN = 3;
+	
+	public final static int PCHC = 0;
+	public final static int TERM = 1;
+	public final static int LAN1 = 2;
+	public final static int GW1 = 3;
+	public final static int WAN = 4;
+	public final static int GW2 = 5;
+	public final static int LAN2 = 6;
+	public final static int PCHS = 7;
+	public final static int DISK = 8;
 	
 	public static BufferedReader is = new BufferedReader(new InputStreamReader(System.in));
 	
@@ -81,15 +89,15 @@ public class IAZI_Simulator {
 		int gen_type = -1;
 		String buf;
 		System.out.println("Generatori");
-		System.out.println("0. Generatore centro PcHC");
-		System.out.println("1. Generatore centro Terminale");
-		System.out.println("2. Generatore centro LAN1");
-		System.out.println("3. Generatore centro GW1");
-		System.out.println("4. Generatore centro WAN");
-		System.out.println("5. Generatore centro GW2");
-		System.out.println("6. Generatore centro LAN2");
-		System.out.println("7. Generatore centro PcHS");
-		System.out.println("8. Generatore centro Disk");
+		System.out.println(PCHC + ". Generatore centro PcHC");
+		System.out.println(TERM + ". Generatore centro Terminale");
+		System.out.println(LAN1 + ". Generatore centro LAN1");
+		System.out.println(GW1 + ". Generatore centro GW1");
+		System.out.println(WAN + ". Generatore centro WAN");
+		System.out.println(GW2 + ". Generatore centro GW2");
+		System.out.println(LAN2 + ". Generatore centro LAN2");
+		System.out.println(PCHS + ". Generatore centro PcHS");
+		System.out.println(DISK + ". Generatore centro Disk");
 		
 		System.out.print("Scegliere il generatore da testare: ");
 		
@@ -103,31 +111,31 @@ public class IAZI_Simulator {
 		TestGeneratori test = new TestGeneratori();
 		
 		switch (gen_type) {
-			case 0:
+			case PCHC:
 				test.testGeneratorePcHC();
 				break;
-			case 1:
+			case TERM:
 				test.testGeneratoreTerm();
 				break;
-			case 2:
+			case LAN1:
 				test.testGeneratoreLAN1();
 				break;
-			case 3:
+			case GW1:
 				test.testGeneratoreGW1();
 				break;
-			case 4:
+			case WAN:
 				test.testGeneratoreWAN();
 				break;
-			case 5:
+			case GW2:
 				test.testGeneratoreGW2();
 				break;
-			case 6:
+			case LAN2:
 				test.testGeneratoreLAN2();
 				break;
-			case 7:
+			case PCHS:
 				test.testGeneratorePcHS();
 				break;
-			case 8:
+			case DISK:
 				test.testGeneratoreDisk();
 				break;
 			default:
